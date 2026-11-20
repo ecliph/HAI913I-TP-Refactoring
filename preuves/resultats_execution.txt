@@ -1,0 +1,242 @@
+==================================================================
+HAI913I - TP REFACTORING (PARTIE 2)
+Étudiants : TEDJNI MOHAMED et SACKO DANGUE
+Date d'exécution : 2026-11-20 21:08:54
+==================================================================
+
+[1/7] Compilation Maven (mvn clean test-compile)...
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mfr.umontpellier.hai913i:HAI913I-TP-Refactoring[0;1m >-----------[m
+[[1;34mINFO[m] [1mBuilding HAI913I - TP Refactoring (Partie 2) 1.0.0[m
+[[1;34mINFO[m]   from pom.xml
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mclean:3.2.0:clean[m [1m(default-clean)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:resources[m [1m(default-resources)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/ecliph/Documents/OneDrive/Documents/m2/evol_logi/TP4/partie_2/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mcompiler:3.13.0:compile[m [1m(default-compile)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged source code[m.
+[[1;34mINFO[m] Compiling 30 source files with javac [debug release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:testResources[m [1m(default-testResources)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/ecliph/Documents/OneDrive/Documents/m2/evol_logi/TP4/partie_2/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mcompiler:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.830 s
+[[1;34mINFO[m] Finished at: 2026-11-20T21:08:55+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+
+------------------------------------------------------------------
+[2/7] Exécution de : fr.umontpellier.hai913i.refactoring.mohamed.initial.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME INITIAL MOHAMED (Conversions explicites / Casts) ===
+
+--- Bilans individuels ---
+[Développeur] Alice Martin (Langage : Java, Projets : 4) -> Salaire : 2500.0 €, Prime : 1200.0 €, Total : 3700.0 €
+[Développeur] Benoit Blanc (Langage : Python, Projets : 0) -> Salaire : 2300.0 €, Prime : 0.0 €, Total : 2300.0 €
+[Commercial] Chloé Bernard (CA : 50000.0 €, Taux : 5.0%) -> Salaire : 2200.0 €, Prime : 2500.0 €, Total : 4700.0 €
+[Manager] David Petit (Équipe : 6, Objectifs atteints : Oui) -> Salaire : 3200.0 €, Prime : 1400.0 €, Total : 4600.0 €
+[Manager] Emma Leroy (Équipe : 3, Objectifs atteints : Non) -> Salaire : 3000.0 €, Prime : 450.0 €, Total : 3450.0 €
+[OK] Prime Alice (Développeur, 4 projets) -> 1200.0
+[OK] Prime Benoit (Développeur, 0 projet) -> 0.0
+[OK] Prime Chloé (Commercial, 50000 * 5%) -> 2500.0
+[OK] Prime David (Manager, équipe 6, obj atteints) -> 1400.0
+[OK] Prime Emma (Manager, équipe 3, obj non atteints) -> 450.0
+
+Total des primes versées : 5550.0 €
+[OK] Total des primes -> 5550.0
+
+--- Recherche d'employé ---
+Employé trouvé : Chloé Bernard (Salaire de base : 2200.0 €)
+[OK] Recherche Chloé Bernard trouvée
+[OK] Recherche employé inexistant renvoie null
+
+[SUCCÈS] Tous les tests du programme initial de Mohamed sont validés.
+
+------------------------------------------------------------------
+[3/7] Exécution de : fr.umontpellier.hai913i.refactoring.mohamed.llm.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME MOHAMED - VERSION REFACTORÉE PAR LLM (Polymorphisme) ===
+
+--- Bilans individuels ---
+[Développeur] Alice Martin (Langage : Java, Projets : 4) -> Salaire : 2500.0 €, Prime : 1200.0 €, Total : 3700.0 €
+[Développeur] Benoit Blanc (Langage : Python, Projets : 0) -> Salaire : 2300.0 €, Prime : 0.0 €, Total : 2300.0 €
+[Commercial] Chloé Bernard (CA : 50000.0 €, Taux : 5.0%) -> Salaire : 2200.0 €, Prime : 2500.0 €, Total : 4700.0 €
+[Manager] David Petit (Équipe : 6, Objectifs atteints : Oui) -> Salaire : 3200.0 €, Prime : 1400.0 €, Total : 4600.0 €
+[Manager] Emma Leroy (Équipe : 3, Objectifs atteints : Non) -> Salaire : 3000.0 €, Prime : 450.0 €, Total : 3450.0 €
+[OK] Prime Alice (Développeur, 4 projets) -> 1200.0
+[OK] Prime Benoit (Développeur, 0 projet) -> 0.0
+[OK] Prime Chloé (Commercial, 50000 * 5%) -> 2500.0
+[OK] Prime David (Manager, équipe 6, obj atteints) -> 1400.0
+[OK] Prime Emma (Manager, équipe 3, obj non atteints) -> 450.0
+
+Total des primes versées : 5550.0 €
+[OK] Total des primes -> 5550.0
+
+--- Recherche d'employé ---
+Employé trouvé : Chloé Bernard (Salaire de base : 2200.0 €)
+[OK] Recherche Chloé Bernard trouvée
+[OK] Recherche employé inexistant renvoie null
+
+[SUCCÈS] Tous les tests de la version LLM (Mohamed) sont validés.
+
+------------------------------------------------------------------
+[4/7] Exécution de : fr.umontpellier.hai913i.refactoring.mohamed.eclipse.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME MOHAMED - VERSION ECLIPSE (Avant refactoring manuel) ===
+
+--- Bilans individuels ---
+[Développeur] Alice Martin (Langage : Java, Projets : 4) -> Salaire : 2500.0 €, Prime : 1200.0 €, Total : 3700.0 €
+[Développeur] Benoit Blanc (Langage : Python, Projets : 0) -> Salaire : 2300.0 €, Prime : 0.0 €, Total : 2300.0 €
+[Commercial] Chloé Bernard (CA : 50000.0 €, Taux : 5.0%) -> Salaire : 2200.0 €, Prime : 2500.0 €, Total : 4700.0 €
+[Manager] David Petit (Équipe : 6, Objectifs atteints : Oui) -> Salaire : 3200.0 €, Prime : 1400.0 €, Total : 4600.0 €
+[Manager] Emma Leroy (Équipe : 3, Objectifs atteints : Non) -> Salaire : 3000.0 €, Prime : 450.0 €, Total : 3450.0 €
+[OK] Prime Alice (Développeur, 4 projets) -> 1200.0
+[OK] Prime Benoit (Développeur, 0 projet) -> 0.0
+[OK] Prime Chloé (Commercial, 50000 * 5%) -> 2500.0
+[OK] Prime David (Manager, équipe 6, obj atteints) -> 1400.0
+[OK] Prime Emma (Manager, équipe 3, obj non atteints) -> 450.0
+
+Total des primes versées : 5550.0 €
+[OK] Total des primes -> 5550.0
+
+--- Recherche d'employé ---
+Employé trouvé : Chloé Bernard (Salaire de base : 2200.0 €)
+[OK] Recherche Chloé Bernard trouvée
+[OK] Recherche employé inexistant renvoie null
+
+[SUCCÈS] Tous les tests de la version Eclipse (Mohamed) sont validés.
+
+------------------------------------------------------------------
+[5/7] Exécution de : fr.umontpellier.hai913i.refactoring.sacko.initial.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME INITIAL SACKO (Mélange codes d'erreur, null et exceptions) ===
+
+--- 1. Cas normaux ---
+Créée : Réservation [RES-1] - Client : Groupe M2 ICO, Salle : A101, Personnes : 20
+[OK] Réservation RES-1 créée
+[OK] Places disponibles dans A101 après RES-1 -> 10
+Créée : Réservation [RES-2] - Client : Soutenance Stage, Salle : B202, Personnes : 8
+[OK] Réservation RES-2 créée
+[OK] Places disponibles dans B202 après RES-2 -> 2
+
+--- 2. Erreur salle introuvable (Code -1 / retour null) ---
+Code retour verifierEtReserver(Z999) : -1
+[OK] Code erreur salle introuvable (-1) -> -1
+[OK] creerReservation(Z999) retourne null
+
+--- 3. Erreur capacité insuffisante (Code -2 / retour null) ---
+Code retour verifierEtReserver(A101, 15 places) : -2
+[OK] Code erreur capacité insuffisante (-2) -> -2
+[OK] creerReservation(A101, 15) retourne null
+
+--- 4. Erreurs signalées par exception (paramètres invalides) ---
+Exception capturée (client vide) : Le nom du client ne peut pas être vide.
+[OK] Exception levée pour nomClient vide
+Exception capturée (nbPersonnes <= 0) : Le nombre de personnes doit être strictement positif.
+[OK] Exception levée pour nbPersonnes <= 0
+
+--- 5. Recherche et annulation ---
+[OK] Recherche RES-1 trouvée
+[OK] Recherche RES-999 retourne null
+Code retour annulerReservation(RES-999) : -3
+[OK] Code erreur annulation introuvable (-3) -> -3
+Code retour annulerReservation(RES-1) : 0
+[OK] Code succès annulation RES-1 (0) -> 0
+[OK] Places disponibles dans A101 après annulation -> 30
+[OK] Nombre de réservations actives finales -> 1
+
+[SUCCÈS] Tous les tests du programme initial de Sacko sont validés.
+
+------------------------------------------------------------------
+[6/7] Exécution de : fr.umontpellier.hai913i.refactoring.sacko.llm.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME SACKO - VERSION REFACTORÉE PAR LLM (Exceptions cohérentes) ===
+
+--- 1. Cas normaux ---
+Créée : Réservation [RES-1] - Client : Groupe M2 ICO, Salle : A101, Personnes : 20
+[OK] Réservation RES-1 créée
+[OK] Places disponibles dans A101 après RES-1 -> 10
+Créée : Réservation [RES-2] - Client : Soutenance Stage, Salle : B202, Personnes : 8
+[OK] Réservation RES-2 créée
+[OK] Places disponibles dans B202 après RES-2 -> 2
+
+--- 2. Erreur salle introuvable (Exception au lieu de Code -1 / null) ---
+Exception capturée verifierEtReserver(Z999) : Salle introuvable : Z999
+[OK] Exception IllegalArgumentException pour salle introuvable (verifierEtReserver)
+[OK] Exception IllegalArgumentException pour salle introuvable (creerReservation)
+
+--- 3. Erreur capacité insuffisante (Exception au lieu de Code -2 / null) ---
+Exception capturée verifierEtReserver(A101, 15 places) : Capacité insuffisante dans la salle A101 (demandé : 15, disponible : 10).
+[OK] Exception IllegalStateException pour capacité insuffisante (verifierEtReserver)
+[OK] Exception IllegalStateException pour capacité insuffisante (creerReservation)
+
+--- 4. Erreurs de paramètres invalides (IllegalArgumentException) ---
+Exception capturée (client vide) : Le nom du client ne peut pas être vide.
+[OK] Exception levée pour nomClient vide
+Exception capturée (nbPersonnes <= 0) : Le nombre de personnes doit être strictement positif.
+[OK] Exception levée pour nbPersonnes <= 0
+
+--- 5. Recherche et annulation ---
+[OK] Recherche RES-1 trouvée
+Exception capturée chercherReservation(RES-999) : Réservation introuvable : RES-999
+[OK] Recherche RES-999 lève IllegalArgumentException
+Exception capturée annulerReservation(RES-999) : Réservation introuvable : RES-999
+[OK] Annulation RES-999 lève IllegalArgumentException (au lieu de code -3)
+Annulation de RES-1 effectuée avec succès.
+[OK] Places disponibles dans A101 après annulation -> 30
+[OK] Nombre de réservations actives finales -> 1
+
+[SUCCÈS] Tous les tests de la version LLM (Sacko) sont validés.
+
+------------------------------------------------------------------
+[7/7] Exécution de : fr.umontpellier.hai913i.refactoring.sacko.eclipse.Main
+------------------------------------------------------------------
+=== TEST PROGRAMME SACKO - VERSION ECLIPSE (Avant refactoring manuel) ===
+
+--- 1. Cas normaux ---
+Créée : Réservation [RES-1] - Client : Groupe M2 ICO, Salle : A101, Personnes : 20
+[OK] Réservation RES-1 créée
+[OK] Places disponibles dans A101 après RES-1 -> 10
+Créée : Réservation [RES-2] - Client : Soutenance Stage, Salle : B202, Personnes : 8
+[OK] Réservation RES-2 créée
+[OK] Places disponibles dans B202 après RES-2 -> 2
+
+--- 2. Erreur salle introuvable (Code -1 / retour null) ---
+Code retour verifierEtReserver(Z999) : -1
+[OK] Code erreur salle introuvable (-1) -> -1
+[OK] creerReservation(Z999) retourne null
+
+--- 3. Erreur capacité insuffisante (Code -2 / retour null) ---
+Code retour verifierEtReserver(A101, 15 places) : -2
+[OK] Code erreur capacité insuffisante (-2) -> -2
+[OK] creerReservation(A101, 15) retourne null
+
+--- 4. Erreurs signalées par exception (paramètres invalides) ---
+Exception capturée (client vide) : Le nom du client ne peut pas être vide.
+[OK] Exception levée pour nomClient vide
+Exception capturée (nbPersonnes <= 0) : Le nombre de personnes doit être strictement positif.
+[OK] Exception levée pour nbPersonnes <= 0
+
+--- 5. Recherche et annulation ---
+[OK] Recherche RES-1 trouvée
+[OK] Recherche RES-999 retourne null
+Code retour annulerReservation(RES-999) : -3
+[OK] Code erreur annulation introuvable (-3) -> -3
+Code retour annulerReservation(RES-1) : 0
+[OK] Code succès annulation RES-1 (0) -> 0
+[OK] Places disponibles dans A101 après annulation -> 30
+[OK] Nombre de réservations actives finales -> 1
+
+[SUCCÈS] Tous les tests de la version Eclipse (Sacko) sont validés.
+
+==================================================================
+BILAN : Les 6 classes Main ont compilé et réussi tous leurs tests.
+==================================================================

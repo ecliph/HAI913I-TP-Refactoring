@@ -1,0 +1,37 @@
+/*
+ * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
+ * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : TEDJNI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
+ * Nature du fichier : Sous-classe Commercial après refactoring par le LLM (polymorphisme).
+ */
+package fr.umontpellier.hai913i.refactoring.mohamed.llm;
+
+public class Commercial extends Employe {
+    private double chiffreAffaires;
+    private double tauxCommission;
+
+    public Commercial(String nom, double salaireBase, double chiffreAffaires, double tauxCommission) {
+        super(nom, salaireBase);
+        this.chiffreAffaires = chiffreAffaires;
+        this.tauxCommission = tauxCommission;
+    }
+
+    public double getChiffreAffaires() {
+        return chiffreAffaires;
+    }
+
+    public double getTauxCommission() {
+        return tauxCommission;
+    }
+
+    @Override
+    public double calculerPrime() {
+        return chiffreAffaires * tauxCommission;
+    }
+
+    @Override
+    public String getDetailsCategorie() {
+        return "[Commercial] " + getNom()
+                + " (CA : " + chiffreAffaires + " €, Taux : " + (tauxCommission * 100) + "%)";
+    }
+}

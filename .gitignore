@@ -1,0 +1,26 @@
+# Documents privés transmis par l'enseignante (contient des données sur les étudiants)
+docs/
+
+# Fichiers de compilation Maven et Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Fichiers spécifiques à Eclipse (générés localement lors de l'import Maven)
+.classpath
+.project
+.settings/
+.factorypath
+
+# Fichiers spécifiques à VS Code / Antigravity
+.vscode/
+.antigravity/
+
+# Fichiers système (Ubuntu / Linux / macOS / Windows)
+*~
+.DS_Store
+Thumbs.db
+.directory
