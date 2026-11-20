@@ -1,7 +1,7 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJNI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
  * Nature du fichier : Sous-classe Commercial après refactoring par le LLM (polymorphisme).
  */
 package fr.umontpellier.hai913i.refactoring.mohamed.llm;
@@ -35,3 +35,4 @@ public class Commercial extends Employe {
                 + " (CA : " + chiffreAffaires + " €, Taux : " + (tauxCommission * 100) + "%)";
     }
 }
+

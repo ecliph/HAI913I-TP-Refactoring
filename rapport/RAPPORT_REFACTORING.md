@@ -3,7 +3,7 @@
 **Module :** HAI913I — Évolution et Restructuration Logicielle (Master 2 Informatique ICO — Université de Montpellier)  
 **Enseignante :** Marianne Huchard  
 **Étudiants :**
-- **TEDJNI MOHAMED**
+- **TEDJINI MOHAMED**
 - **SACKO DANGUE**
 
 ---
@@ -15,14 +15,14 @@ Dans cette seconde partie du TP, nous étudions concrètement comment corriger d
 2. **L'utilisation d'un LLM**, sollicité pour refactorer intégralement le programme en nommant et expliquant les opérations appliquées.
 
 Conformément au sujet (sections 2.1 et 2.2), nous avons réparti le travail en croisant les rôles :
-- **Programme 1** : créé initialement par **TEDJNI MOHAMED** sur le défaut *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"*, puis confié à **SACKO DANGUE** pour le refactoring sous Eclipse et avec le LLM.
-- **Programme 2** : créé initialement par **SACKO DANGUE** sur le défaut *"Mixing return codes, nulls, and exceptions creates confusion and bugs"*, puis confié à **TEDJNI MOHAMED** pour le refactoring sous Eclipse et avec le LLM.
+- **Programme 1** : créé initialement par **TEDJINI MOHAMED** sur le défaut *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"*, puis confié à **SACKO DANGUE** pour le refactoring sous Eclipse et avec le LLM.
+- **Programme 2** : créé initialement par **SACKO DANGUE** sur le défaut *"Mixing return codes, nulls, and exceptions creates confusion and bugs"*, puis confié à **TEDJINI MOHAMED** pour le refactoring sous Eclipse et avec le LLM.
 
 ---
 
 ## Partie A — Programme 1 : Conversions explicites vers des types concrets
 
-- **Auteur du programme initial :** TEDJNI MOHAMED (`fr.umontpellier.hai913i.refactoring.mohamed.initial`)
+- **Auteur du programme initial :** TEDJINI MOHAMED (`fr.umontpellier.hai913i.refactoring.mohamed.initial`)
 - **Auteur du refactoring :** SACKO DANGUE (`...mohamed.eclipse` et `...mohamed.llm`)
 
 ### 1. Défaut attribué
@@ -97,7 +97,7 @@ Dans le package `fr.umontpellier.hai913i.refactoring.mohamed.llm`, le LLM a appl
 ## Partie B — Programme 2 : Mélange incohérent de codes de retour, `null` et exceptions
 
 - **Auteur du programme initial :** SACKO DANGUE (`fr.umontpellier.hai913i.refactoring.sacko.initial`)
-- **Auteur du refactoring :** TEDJNI MOHAMED (`...sacko.eclipse` et `...sacko.llm`)
+- **Auteur du refactoring :** TEDJINI MOHAMED (`...sacko.eclipse` et `...sacko.llm`)
 
 ### 1. Défaut attribué
 > *"Mixing return codes, nulls, and exceptions creates confusion and bugs."*
@@ -163,7 +163,7 @@ Dans le package `fr.umontpellier.hai913i.refactoring.sacko.llm`, le LLM a effect
 - **Résultats observables :** l'état des salles (`10` places restantes dans `A101`, `2` dans `B202`, puis retour à `30` places dans `A101` après annulation de `RES-1`) et le nombre final de réservations actives (`1`) sont **strictement identiques** entre la version initiale et la version LLM (voir `preuves/resultats_execution.txt`).
 
 ### 9. Retour d'expérience sur la manipulation sous Eclipse (Programme 2)
-> **À compléter après manipulation Eclipse par TEDJNI MOHAMED :**
+> **À compléter après manipulation Eclipse par TEDJINI MOHAMED :**
 > - *Indiquer ici l'utilisation de `Change Method Signature` dans Eclipse pour passer les méthodes de `int` à `void`.*
 > - *Expliquer comment les erreurs de compilation signalées par Eclipse ont guidé le remplacement manuel des `return -1/-2/-3` et `return null` par des `throw new ...` et la mise à jour de `Main`.*
 > - *Joindre les références aux captures d'écran placées dans `preuves/eclipse/sacko/`.*
@@ -205,3 +205,4 @@ Dans le package `fr.umontpellier.hai913i.refactoring.sacko.llm`, le LLM a effect
 Ce TP montre que les deux approches sont complémentaires :
 - **Eclipse** apporte la rigueur mécanique et la sécurité sur les opérations élémentaires de restructuration.
 - **Le LLM** permet d'automatiser des refactorings de plus haut niveau que l'IDE ne sait pas exécuter seul (comme le passage au polymorphisme ou l'harmonisation de la gestion d'erreurs par exceptions), à condition que le développeur maîtrise les concepts du refactoring pour guider l'outil, contrôler les changements de signatures publiques et valider la préservation du comportement par des tests.
+

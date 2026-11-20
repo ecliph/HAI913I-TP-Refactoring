@@ -1,7 +1,7 @@
 # Consignes pour les Captures d'Écran Eclipse
 
 **Module :** HAI913I — Évolution et Restructuration Logicielle (Master 2 Informatique ICO — Université de Montpellier)  
-**Étudiants :** TEDJNI MOHAMED et SACKO DANGUE
+**Étudiants :** TEDJINI MOHAMED et SACKO DANGUE
 
 La section 2.2 du sujet demande d'illustrer par des **copies d'écran des différentes étapes** les procédures de refactoring appliquées sous Eclipse.
 
@@ -10,7 +10,7 @@ Aucune fausse capture n'a été générée automatiquement. Lorsque vous réalis
 ---
 
 ## 1. Dossier `preuves/eclipse/mohamed/`
-*(Refactoring du programme de TEDJNI MOHAMED réalisé sous Eclipse par SACKO DANGUE)*
+*(Refactoring du programme de TEDJINI MOHAMED réalisé sous Eclipse par SACKO DANGUE)*
 
 | Nom de fichier conseillé | Étape à capturer dans Eclipse |
 | :--- | :--- |
@@ -25,7 +25,7 @@ Aucune fausse capture n'a été générée automatiquement. Lorsque vous réalis
 ---
 
 ## 2. Dossier `preuves/eclipse/sacko/`
-*(Refactoring du programme de SACKO DANGUE réalisé sous Eclipse par TEDJNI MOHAMED)*
+*(Refactoring du programme de SACKO DANGUE réalisé sous Eclipse par TEDJINI MOHAMED)*
 
 | Nom de fichier conseillé | Étape à capturer dans Eclipse |
 | :--- | :--- |
@@ -35,3 +35,4 @@ Aucune fausse capture n'a été générée automatiquement. Lorsque vous réalis
 | `04_sacko_code_service_refactore.png` | Éditeur Eclipse montrant `ServiceReservation.java` après remplacement manuel des codes d'erreur et de `null` par `throw new IllegalArgumentException(...)` et `throw new IllegalStateException(...)` (*Replace Error Code with Exception*). |
 | `05_sacko_main_adapte.png` | Éditeur Eclipse montrant `Main.java` (package `sacko.eclipse`) adapté avec les blocs `try / catch`. |
 | `06_sacko_console_tests_ok.png` | Vue **Console** d'Eclipse après `Run As → Java Application` sur `sacko.eclipse.Main`, affichant `[SUCCÈS]`. |
+

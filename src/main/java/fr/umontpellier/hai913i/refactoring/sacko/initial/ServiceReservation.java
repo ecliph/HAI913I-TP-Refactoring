@@ -1,6 +1,6 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
  * Sujet attribué à : SACKO DANGUE ("Mixing return codes, nulls, and exceptions creates confusion and bugs.")
  * Nature du fichier : Système de réservation illustrant le défaut de gestion incohérente des erreurs.
  * Création : Programme initial préparé avec l'assistance d'un LLM.
@@ -18,7 +18,7 @@
  * Ce mélange oblige l'appelant (Main) à combiner des blocs try/catch, des tests de codes entiers (< 0)
  * et des vérifications de nullité (!= null), ce qui alourdit le code et favorise les oublis ou NullPointerException.
  *
- * REFACTORING VISÉ (à réaliser par TEDJNI MOHAMED) :
+ * REFACTORING VISÉ (à réaliser par TEDJINI MOHAMED) :
  * - Replace Error Code with Exception (diapositive 20 du cours) : remplacer les codes d'erreur (-1, -2, -3)
  *   et les retours null d'erreur par le lancement cohérent d'exceptions standards Java explicites
  *   (IllegalArgumentException pour les paramètres ou références invalides, IllegalStateException pour
@@ -115,3 +115,4 @@ public class ServiceReservation {
         return reservations.size();
     }
 }
+

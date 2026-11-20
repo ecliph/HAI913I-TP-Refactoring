@@ -3,7 +3,7 @@
 **Master 2 Informatique — Parcours ICO — Université de Montpellier (2026)**  
 **Module :** HAI913I — Évolution et Restructuration Logicielle (Enseignante : Marianne Huchard)  
 **Binôme :**
-- **TEDJNI MOHAMED**
+- **TEDJINI MOHAMED**
 - **SACKO DANGUE**
 
 ---
@@ -25,8 +25,8 @@ Conformément aux consignes du sujet (sections 2.1 et 2.2) :
 
 | Étudiant ayant créé le code initial | Défaut attribué (*AffectationSmells.xlsx*) | Scénario Java illustrant le défaut | Étudiant réalisant le refactoring (Eclipse & LLM) |
 | :--- | :--- | :--- | :--- |
-| **TEDJNI MOHAMED** | *"Code frequently casts to concrete types, breaking polymorphism and adding fragility."* | Calcul de primes et de bilans d'employés (`Employe`, `Developpeur`, `Commercial`, `Manager`, `CalculateurPrime`) | **SACKO DANGUE** |
-| **SACKO DANGUE** | *"Mixing return codes, nulls, and exceptions creates confusion and bugs."* | Gestion de réservations de salles (`Salle`, `Reservation`, `ServiceReservation`) | **TEDJNI MOHAMED** |
+| **TEDJINI MOHAMED** | *"Code frequently casts to concrete types, breaking polymorphism and adding fragility."* | Calcul de primes et de bilans d'employés (`Employe`, `Developpeur`, `Commercial`, `Manager`, `CalculateurPrime`) | **SACKO DANGUE** |
+| **SACKO DANGUE** | *"Mixing return codes, nulls, and exceptions creates confusion and bugs."* | Gestion de réservations de salles (`Salle`, `Reservation`, `ServiceReservation`) | **TEDJINI MOHAMED** |
 
 ---
 
@@ -73,7 +73,7 @@ HAI913I-TP-Refactoring/
 | `...refactoring.mohamed.eclipse` | **Prêt pour manipulation Eclipse** | Copie fonctionnelle du code initial prête à être refactorée manuellement dans Eclipse par SACKO DANGUE en suivant `rapport/GUIDE_ECLIPSE.md`. |
 | `...refactoring.sacko.initial` | **Terminé et testé** | Contient volontairement le mélange de codes d'erreur (`0`, `-1`, `-2`, `-3`), de retours `null` et d'exceptions (`IllegalArgumentException`). |
 | `...refactoring.sacko.llm` | **Terminé et testé** | Refactoré intégralement par le LLM (*Replace Error Code with Exception*, harmonisation par exceptions standards). |
-| `...refactoring.sacko.eclipse` | **Prêt pour manipulation Eclipse** | Copie fonctionnelle du code initial prête à être refactorée manuellement dans Eclipse par TEDJNI MOHAMED en suivant `rapport/GUIDE_ECLIPSE.md`. |
+| `...refactoring.sacko.eclipse` | **Prêt pour manipulation Eclipse** | Copie fonctionnelle du code initial prête à être refactorée manuellement dans Eclipse par TEDJINI MOHAMED en suivant `rapport/GUIDE_ECLIPSE.md`. |
 
 ---
 
@@ -130,3 +130,4 @@ Un script shell compile l'ensemble du projet, exécute les 6 méthodes `main` et
 2. Suivre le guide détaillé [`rapport/GUIDE_ECLIPSE.md`](rapport/GUIDE_ECLIPSE.md) pour appliquer les opérations de refactoring dans les packages `.eclipse` (`mohamed.eclipse` et `sacko.eclipse`).
 3. Prendre les captures d'écran demandées à chaque étape et les enregistrer dans `preuves/eclipse/mohamed/` et `preuves/eclipse/sacko/` en suivant [`preuves/eclipse/CONSIGNES_CAPTURES.md`](preuves/eclipse/CONSIGNES_CAPTURES.md).
 4. Compléter les sections marquées *"À compléter après manipulation Eclipse"* dans [`rapport/RAPPORT_REFACTORING.md`](rapport/RAPPORT_REFACTORING.md).
+

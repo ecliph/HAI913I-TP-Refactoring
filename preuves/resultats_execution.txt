@@ -1,7 +1,7 @@
 ==================================================================
 HAI913I - TP REFACTORING (PARTIE 2)
-Étudiants : TEDJNI MOHAMED et SACKO DANGUE
-Date d'exécution : 2026-11-20 21:08:54
+Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+Date d'exécution : 2026-11-20 21:26:07
 ==================================================================
 
 [1/7] Compilation Maven (mvn clean test-compile)...
@@ -13,6 +13,7 @@ Date d'exécution : 2026-11-20 21:08:54
 [[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
 [[1;34mINFO[m] 
 [[1;34mINFO[m] [1m--- [0;32mclean:3.2.0:clean[m [1m(default-clean)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/ecliph/Documents/OneDrive/Documents/m2/evol_logi/TP4/partie_2/target
 [[1;34mINFO[m] 
 [[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:resources[m [1m(default-resources)[m @ [36mHAI913I-TP-Refactoring[0;1m ---[m
 [[1;34mINFO[m] skip non existing resourceDirectory /home/ecliph/Documents/OneDrive/Documents/m2/evol_logi/TP4/partie_2/src/main/resources
@@ -29,8 +30,8 @@ Date d'exécution : 2026-11-20 21:08:54
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
 [[1;34mINFO[m] [1;32mBUILD SUCCESS[m
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
-[[1;34mINFO[m] Total time:  0.830 s
-[[1;34mINFO[m] Finished at: 2026-11-20T21:08:55+01:00
+[[1;34mINFO[m] Total time:  0.837 s
+[[1;34mINFO[m] Finished at: 2026-11-20T21:26:09+01:00
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
 
 ------------------------------------------------------------------

@@ -3,7 +3,7 @@
 **Module :** HAI913I — Évolution et Restructuration Logicielle (Master 2 Informatique ICO — Université de Montpellier)  
 **Enseignante :** Marianne Huchard  
 **Étudiants :**
-- **TEDJNI MOHAMED**
+- **TEDJINI MOHAMED**
 - **SACKO DANGUE**
 
 Conformément aux consignes des sections 2.1 et 2.2 du sujet de TP, ce document précise l'outil d'IA utilisé, son rôle dans la création des programmes initiaux et des versions refactorées `.llm`, les prompts employés, ainsi que notre analyse critique et les vérifications effectuées.
@@ -22,7 +22,7 @@ Conformément aux consignes des sections 2.1 et 2.2 du sujet de TP, ce document 
 L'IA a été sollicitée pour deux tâches distinctes prévues par l'énoncé :
 
 1. **Section 2.1 — Aide à la création des deux programmes initiaux contenant les défauts attribués :**
-   - Pour **TEDJNI MOHAMED** : génération du programme initial `fr.umontpellier.hai913i.refactoring.mohamed.initial` illustrant le défaut *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"* autour d'un système de calcul de primes d'employés (`Employe`, `Developpeur`, `Commercial`, `Manager`, `CalculateurPrime`, `Main`).
+   - Pour **TEDJINI MOHAMED** : génération du programme initial `fr.umontpellier.hai913i.refactoring.mohamed.initial` illustrant le défaut *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"* autour d'un système de calcul de primes d'employés (`Employe`, `Developpeur`, `Commercial`, `Manager`, `CalculateurPrime`, `Main`).
    - Pour **SACKO DANGUE** : génération du programme initial `fr.umontpellier.hai913i.refactoring.sacko.initial` illustrant le défaut *"Mixing return codes, nulls, and exceptions creates confusion and bugs"* autour d'un système de réservation de salles (`Salle`, `Reservation`, `ServiceReservation`, `Main`).
 
 2. **Section 2.2 (point 2) — Refactoring intégral avec un LLM :**
@@ -37,7 +37,7 @@ L'IA a été sollicitée pour deux tâches distinctes prévues par l'énoncé :
 
 ### A. Prompt de création et cadrage général du projet
 Nous avons fourni au LLM le contexte complet du TP :
-- Nos deux noms (**TEDJNI MOHAMED** et **SACKO DANGUE**) et les trois documents de référence du cours (`TP_refactoring_2026.pdf`, `2026_diaposRefactoring.pdf`, `AffectationSmells.xlsx`).
+- Nos deux noms (**TEDJINI MOHAMED** et **SACKO DANGUE**) et les trois documents de référence du cours (`TP_refactoring_2026.pdf`, `2026_diaposRefactoring.pdf`, `AffectationSmells.xlsx`).
 - Les deux défauts exacts attribués dans le fichier Excel :
   - Mohamed : *"Code frequently casts to concrete types, breaking polymorphism and adding fragility."*
   - Sacko : *"Mixing return codes, nulls, and exceptions creates confusion and bugs."*
@@ -83,3 +83,4 @@ Nous avons fourni au LLM le contexte complet du TP :
 
 Toutes les versions ont été compilées avec Maven (`mvn clean test-compile` avec `--release 17`) et exécutées via le script `./scripts/verifier_tout.sh`.  
 Les traces complètes et authentiques d'exécution sont enregistrées dans [`preuves/resultats_execution.txt`](../preuves/resultats_execution.txt).
+

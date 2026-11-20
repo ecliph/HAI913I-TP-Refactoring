@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
-# Étudiants : TEDJNI MOHAMED et SACKO DANGUE
+# Étudiants : TEDJINI MOHAMED et SACKO DANGUE
 # Script de compilation et de vérification des 6 variantes du projet.
 
 set -e
@@ -10,7 +10,7 @@ RAPPORT_EXEC="preuves/resultats_execution.txt"
 
 echo "==================================================================" | tee "$RAPPORT_EXEC"
 echo "HAI913I - TP REFACTORING (PARTIE 2)" | tee -a "$RAPPORT_EXEC"
-echo "Étudiants : TEDJNI MOHAMED et SACKO DANGUE" | tee -a "$RAPPORT_EXEC"
+echo "Étudiants : TEDJINI MOHAMED et SACKO DANGUE" | tee -a "$RAPPORT_EXEC"
 echo "Date d'exécution : $(date '+%Y-%m-%d %H:%M:%S')" | tee -a "$RAPPORT_EXEC"
 echo "==================================================================" | tee -a "$RAPPORT_EXEC"
 
@@ -41,3 +41,4 @@ echo "" | tee -a "$RAPPORT_EXEC"
 echo "==================================================================" | tee -a "$RAPPORT_EXEC"
 echo "BILAN : Les 6 classes Main ont compilé et réussi tous leurs tests." | tee -a "$RAPPORT_EXEC"
 echo "==================================================================" | tee -a "$RAPPORT_EXEC"
+

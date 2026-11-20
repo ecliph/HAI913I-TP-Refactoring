@@ -1,6 +1,6 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
  * Sujet attribué à : SACKO DANGUE ("Mixing return codes, nulls, and exceptions creates confusion and bugs.")
  * Nature du fichier : Programme principal de test (version initiale).
  * Création : Programme initial préparé avec l'assistance d'un LLM.
@@ -103,3 +103,4 @@ public class Main {
         System.out.println("[OK] " + description);
     }
 }
+

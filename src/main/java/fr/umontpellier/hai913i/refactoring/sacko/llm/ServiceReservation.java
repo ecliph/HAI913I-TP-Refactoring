@@ -1,7 +1,7 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
- * Sujet attribué à : SACKO DANGUE — Refactoring réalisé par : TEDJNI MOHAMED (via LLM)
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : SACKO DANGUE — Refactoring réalisé par : TEDJINI MOHAMED (via LLM)
  * Nature du fichier : Classe ServiceReservation après refactoring intégral par le LLM.
  *
  * REFACTORINGS APPLIQUÉS :
@@ -98,3 +98,4 @@ public class ServiceReservation {
         return reservations.size();
     }
 }
+

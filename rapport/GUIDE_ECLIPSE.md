@@ -1,11 +1,11 @@
 # Guide Pas à Pas — Réalisation des Refactorings dans Eclipse
 
 **Module :** HAI913I — Évolution et Restructuration Logicielle (Master 2 Informatique ICO — Université de Montpellier)  
-**Étudiants :** TEDJNI MOHAMED et SACKO DANGUE
+**Étudiants :** TEDJINI MOHAMED et SACKO DANGUE
 
 Ce guide détaille étape par étape comment réaliser dans **Eclipse** les opérations de refactoring sur les deux packages dédiés :
 - `fr.umontpellier.hai913i.refactoring.mohamed.eclipse` (à réaliser par **SACKO DANGUE**)
-- `fr.umontpellier.hai913i.refactoring.sacko.eclipse` (à réaliser par **TEDJNI MOHAMED**)
+- `fr.umontpellier.hai913i.refactoring.sacko.eclipse` (à réaliser par **TEDJINI MOHAMED**)
 
 > **Important :** Les packages `.initial` et `.llm` ne doivent pas être modifiés. Toutes les manipulations Eclipse se font uniquement dans les packages `.eclipse`.
 
@@ -149,7 +149,7 @@ Comme Eclipse n'automatise pas la suppression des blocs `if (employe instanceof 
 
 ---
 
-## Partie 2 — Refactoring du programme de Sacko dans Eclipse (par TEDJNI MOHAMED)
+## Partie 2 — Refactoring du programme de Sacko dans Eclipse (par TEDJINI MOHAMED)
 
 **Package concerné :** `fr.umontpellier.hai913i.refactoring.sacko.eclipse`  
 **Défaut à corriger :** *"Mixing return codes, nulls, and exceptions creates confusion and bugs."*  
@@ -237,3 +237,4 @@ Après le changement de signature, Eclipse souligne en rouge les `return ERREUR_
 3. Sauvegarder (`Ctrl+S`) et prendre la **Capture 5** (`05_sacko_main_adapte.png`).
 4. Faire un **clic droit sur `Main.java` (du package `sacko.eclipse`) → Run As → Java Application**.
 5. Vérifier que la console affiche `[SUCCÈS]` et prendre la **Capture 6** (`06_sacko_console_tests_ok.png`).
+

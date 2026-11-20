@@ -1,11 +1,11 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJNI MOHAMED — Refactoring réalisé par : SACKO DANGUE
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE
  * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
  *
  * NOTE IMPORTANTE :
- * Ce package contient une copie fonctionnelle du code initial de TEDJNI MOHAMED destinée à être
+ * Ce package contient une copie fonctionnelle du code initial de TEDJINI MOHAMED destinée à être
  * refactorée manuellement dans Eclipse par SACKO DANGUE (voir le fichier rapport/GUIDE_ECLIPSE.md).
  */
 package fr.umontpellier.hai913i.refactoring.mohamed.eclipse;
@@ -77,3 +77,4 @@ public class CalculateurPrime {
         return null;
     }
 }
+

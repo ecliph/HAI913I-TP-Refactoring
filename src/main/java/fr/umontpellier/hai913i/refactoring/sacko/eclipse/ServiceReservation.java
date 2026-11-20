@@ -1,12 +1,12 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
- * Sujet attribué à : SACKO DANGUE — Refactoring réalisé par : TEDJNI MOHAMED
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : SACKO DANGUE — Refactoring réalisé par : TEDJINI MOHAMED
  * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
  *
  * NOTE IMPORTANTE :
  * Ce package contient une copie fonctionnelle du code initial de SACKO DANGUE destinée à être
- * refactorée manuellement dans Eclipse par TEDJNI MOHAMED (voir le fichier rapport/GUIDE_ECLIPSE.md).
+ * refactorée manuellement dans Eclipse par TEDJINI MOHAMED (voir le fichier rapport/GUIDE_ECLIPSE.md).
  */
 package fr.umontpellier.hai913i.refactoring.sacko.eclipse;
 
@@ -99,3 +99,4 @@ public class ServiceReservation {
         return reservations.size();
     }
 }
+

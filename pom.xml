@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>HAI913I - TP Refactoring (Partie 2)</name>
-    <description>Projet pratique de refactoring comparant Eclipse et un LLM - Master 2 Informatique ICO (TEDJNI MOHAMED et SACKO DANGUE)</description>
+    <description>Projet pratique de refactoring comparant Eclipse et un LLM - Master 2 Informatique ICO (TEDJINI MOHAMED et SACKO DANGUE)</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,3 +32,4 @@
         </plugins>
     </build>
 </project>
+

@@ -1,7 +1,7 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
- * Étudiants : TEDJNI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJNI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
+ * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
+ * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
  * Nature du fichier : Classe CalculateurPrime après refactoring intégral par le LLM.
  *
  * REFACTORINGS APPLIQUÉS :
@@ -45,3 +45,4 @@ public class CalculateurPrime {
         return null;
     }
 }
+
