@@ -1,12 +1,12 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
  * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE
- * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
+ * Sujet attribué à : TEDJINI MOHAMED ("Code frequently casts to concrete types, breaking polymorphism and adding fragility.")
+ * Nature du fichier : Classe mère abstraite Employe après refactoring dans Eclipse.
  */
 package fr.umontpellier.hai913i.refactoring.mohamed.eclipse;
 
-public class Employe {
+public abstract class Employe {
     private String nom;
     private double salaireBase;
 
@@ -22,5 +22,13 @@ public class Employe {
     public double getSalaireBase() {
         return salaireBase;
     }
+
+	public abstract double calculerPrime();
+	
+	public String genererDescriptionBilan() {
+	    return "[Employé] " + getNom();
+	}
+	
+	
 }
 

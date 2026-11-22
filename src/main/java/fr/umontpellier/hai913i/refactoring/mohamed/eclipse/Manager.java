@@ -1,8 +1,8 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
  * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE
- * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
+ * Sujet attribué à : TEDJINI MOHAMED ("Code frequently casts to concrete types, breaking polymorphism and adding fragility.")
+ * Nature du fichier : Sous-classe Manager après refactoring dans Eclipse.
  */
 package fr.umontpellier.hai913i.refactoring.mohamed.eclipse;
 
@@ -22,6 +22,23 @@ public class Manager extends Employe {
 
     public boolean isObjectifsAtteints() {
         return objectifsAtteints;
+    }
+
+    @Override
+    public double calculerPrime() {
+        double prime = getTailleEquipe() * 150.0;
+
+        if (isObjectifsAtteints()) {
+            prime += 500.0;
+        }
+
+        return prime;
+    }
+    @Override
+    public String genererDescriptionBilan() {
+        return "[Manager] " + getNom()
+                + " (Equipe : " + getTailleEquipe()
+                + ", Objectifs atteints : " + (isObjectifsAtteints() ? "Oui" : "Non") + ")";
     }
 }
 

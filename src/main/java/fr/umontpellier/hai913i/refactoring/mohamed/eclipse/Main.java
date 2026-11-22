@@ -1,8 +1,8 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
  * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE
- * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
+ * Sujet attribué à : TEDJINI MOHAMED ("Code frequently casts to concrete types, breaking polymorphism and adding fragility.")
+ * Nature du fichier : Programme principal de test de la version refactorée avec Eclipse.
  */
 package fr.umontpellier.hai913i.refactoring.mohamed.eclipse;
 
@@ -12,13 +12,12 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("=== TEST PROGRAMME MOHAMED - VERSION ECLIPSE (Avant refactoring manuel) ===");
-
+    	System.out.println("=== TEST PROGRAMME MOHAMED - VERSION ECLIPSE (Après refactoring) ===");
         CalculateurPrime calculateur = new CalculateurPrime();
         List<Employe> employes = new ArrayList<>();
 
-        Developpeur dev1 = new Developpeur("Alice Martin", 2500.0, 4, "Java");
-        Developpeur dev2 = new Developpeur("Benoit Blanc", 2300.0, 0, "Python");
+        Employe dev1 = new Developpeur("Alice Martin", 2500.0, 4, "Java");
+        Employe dev2 = new Developpeur("Benoit Blanc", 2300.0, 0, "Python");
         Commercial com1 = new Commercial("Chloé Bernard", 2200.0, 50000.0, 0.05);
         Manager man1 = new Manager("David Petit", 3200.0, 6, true);
         Manager man2 = new Manager("Emma Leroy", 3000.0, 3, false);
@@ -45,13 +44,13 @@ public class Main {
         verifierEgaliteDouble("Total des primes", 5550.0, totalPrimes);
 
         System.out.println("\n--- Recherche d'employé ---");
-        Employe trouve = (Employe) calculateur.trouverPremierParNom(employes, "Chloé Bernard");
+        Employe trouve = calculateur.trouverPremierParNom(employes, "Chloé Bernard");
         if (trouve != null) {
             System.out.println("Employé trouvé : " + trouve.getNom() + " (Salaire de base : " + trouve.getSalaireBase() + " €)");
         }
         verifierCondition("Recherche Chloé Bernard trouvée", trouve != null && "Chloé Bernard".equals(trouve.getNom()));
 
-        Employe absent = (Employe) calculateur.trouverPremierParNom(employes, "Inconnu");
+        Employe absent = calculateur.trouverPremierParNom(employes, "Inconnu");
         verifierCondition("Recherche employé inexistant renvoie null", absent == null);
 
         System.out.println("\n[SUCCÈS] Tous les tests de la version Eclipse (Mohamed) sont validés.");

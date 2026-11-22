@@ -1,7 +1,7 @@
 ==================================================================
 HAI913I - TP REFACTORING (PARTIE 2)
 Étudiants : TEDJINI MOHAMED et SACKO DANGUE
-Date d'exécution : 2026-11-20 21:26:07
+Date d'exécution : 2026-11-22 04:13:19
 ==================================================================
 
 [1/7] Compilation Maven (mvn clean test-compile)...
@@ -30,8 +30,8 @@ Date d'exécution : 2026-11-20 21:26:07
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
 [[1;34mINFO[m] [1;32mBUILD SUCCESS[m
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
-[[1;34mINFO[m] Total time:  0.837 s
-[[1;34mINFO[m] Finished at: 2026-11-20T21:26:09+01:00
+[[1;34mINFO[m] Total time:  0.710 s
+[[1;34mINFO[m] Finished at: 2026-11-22T04:13:20+01:00
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
 
 ------------------------------------------------------------------
@@ -91,14 +91,14 @@ Employé trouvé : Chloé Bernard (Salaire de base : 2200.0 €)
 ------------------------------------------------------------------
 [4/7] Exécution de : fr.umontpellier.hai913i.refactoring.mohamed.eclipse.Main
 ------------------------------------------------------------------
-=== TEST PROGRAMME MOHAMED - VERSION ECLIPSE (Avant refactoring manuel) ===
+=== TEST PROGRAMME MOHAMED - VERSION ECLIPSE (Après refactoring) ===
 
 --- Bilans individuels ---
 [Développeur] Alice Martin (Langage : Java, Projets : 4) -> Salaire : 2500.0 €, Prime : 1200.0 €, Total : 3700.0 €
 [Développeur] Benoit Blanc (Langage : Python, Projets : 0) -> Salaire : 2300.0 €, Prime : 0.0 €, Total : 2300.0 €
 [Commercial] Chloé Bernard (CA : 50000.0 €, Taux : 5.0%) -> Salaire : 2200.0 €, Prime : 2500.0 €, Total : 4700.0 €
-[Manager] David Petit (Équipe : 6, Objectifs atteints : Oui) -> Salaire : 3200.0 €, Prime : 1400.0 €, Total : 4600.0 €
-[Manager] Emma Leroy (Équipe : 3, Objectifs atteints : Non) -> Salaire : 3000.0 €, Prime : 450.0 €, Total : 3450.0 €
+[Manager] David Petit (Equipe : 6, Objectifs atteints : Oui) -> Salaire : 3200.0 €, Prime : 1400.0 €, Total : 4600.0 €
+[Manager] Emma Leroy (Equipe : 3, Objectifs atteints : Non) -> Salaire : 3000.0 €, Prime : 450.0 €, Total : 3450.0 €
 [OK] Prime Alice (Développeur, 4 projets) -> 1200.0
 [OK] Prime Benoit (Développeur, 0 projet) -> 0.0
 [OK] Prime Chloé (Commercial, 50000 * 5%) -> 2500.0
@@ -200,7 +200,7 @@ Annulation de RES-1 effectuée avec succès.
 ------------------------------------------------------------------
 [7/7] Exécution de : fr.umontpellier.hai913i.refactoring.sacko.eclipse.Main
 ------------------------------------------------------------------
-=== TEST PROGRAMME SACKO - VERSION ECLIPSE (Avant refactoring manuel) ===
+=== TEST PROGRAMME SACKO - VERSION REFACTORÉE AVEC ECLIPSE ===
 
 --- 1. Cas normaux ---
 Créée : Réservation [RES-1] - Client : Groupe M2 ICO, Salle : A101, Personnes : 20
@@ -210,15 +210,15 @@ Créée : Réservation [RES-2] - Client : Soutenance Stage, Salle : B202, Person
 [OK] Réservation RES-2 créée
 [OK] Places disponibles dans B202 après RES-2 -> 2
 
---- 2. Erreur salle introuvable (Code -1 / retour null) ---
-Code retour verifierEtReserver(Z999) : -1
-[OK] Code erreur salle introuvable (-1) -> -1
-[OK] creerReservation(Z999) retourne null
+--- 2. Erreur salle introuvable ---
+Exception capturée : Salle introuvable : Z999
+[OK] Salle introuvable : exception levée
+[OK] Création impossible : exception levée
 
---- 3. Erreur capacité insuffisante (Code -2 / retour null) ---
-Code retour verifierEtReserver(A101, 15 places) : -2
-[OK] Code erreur capacité insuffisante (-2) -> -2
-[OK] creerReservation(A101, 15) retourne null
+--- 3. Erreur capacité insuffisante ---
+Exception capturée : Capacité insuffisante dans la salle A101
+[OK] Capacité insuffisante : exception levée
+[OK] Création impossible : capacité insuffisante
 
 --- 4. Erreurs signalées par exception (paramètres invalides) ---
 Exception capturée (client vide) : Le nom du client ne peut pas être vide.
@@ -228,11 +228,11 @@ Exception capturée (nbPersonnes <= 0) : Le nombre de personnes doit être stric
 
 --- 5. Recherche et annulation ---
 [OK] Recherche RES-1 trouvée
-[OK] Recherche RES-999 retourne null
-Code retour annulerReservation(RES-999) : -3
-[OK] Code erreur annulation introuvable (-3) -> -3
-Code retour annulerReservation(RES-1) : 0
-[OK] Code succès annulation RES-1 (0) -> 0
+Exception capturée (recherche) : Réservation introuvable : RES-999
+[OK] Recherche introuvable : exception levée
+Exception capturée (annulation) : Réservation introuvable : RES-999
+[OK] Annulation introuvable : exception levée
+Annulation RES-1 effectuée avec succès.
 [OK] Places disponibles dans A101 après annulation -> 30
 [OK] Nombre de réservations actives finales -> 1
 

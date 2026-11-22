@@ -8,201 +8,212 @@
 
 ---
 
-## Introduction et organisation du binôme
+## Introduction
 
-Dans cette seconde partie du TP, nous étudions concrètement comment corriger deux défauts de conception (*code smells* / *anti-patterns*) en comparant deux approches :
-1. **L'utilisation des opérations de refactoring d'un IDE (Eclipse)**, complétées manuellement lorsque l'outil ne propose pas d'automatisation directe.
-2. **L'utilisation d'un LLM**, sollicité pour refactorer intégralement le programme en nommant et expliquant les opérations appliquées.
+Dans cette seconde partie du TP, nous étudions la correction de deux défauts de conception (*code smells* / *anti-patterns*) en comparant deux méthodes de travail sur un même code initial :
+1. **Le refactoring dans l'IDE Eclipse**, en exploitant les opérations automatisées du menu `Refactor` et en complétant manuellement ce que l'IDE ne prend pas en charge.
+2. **Le refactoring intégral par un LLM**, à qui l'on demande de corriger le défaut et d'expliquer les opérations du catalogue de Fowler appliquées.
 
-Conformément au sujet (sections 2.1 et 2.2), nous avons réparti le travail en croisant les rôles :
-- **Programme 1** : créé initialement par **TEDJINI MOHAMED** sur le défaut *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"*, puis confié à **SACKO DANGUE** pour le refactoring sous Eclipse et avec le LLM.
-- **Programme 2** : créé initialement par **SACKO DANGUE** sur le défaut *"Mixing return codes, nulls, and exceptions creates confusion and bugs"*, puis confié à **TEDJINI MOHAMED** pour le refactoring sous Eclipse et avec le LLM.
+Les deux sujets attribués dans le fichier officiel `AffectationSmells.xlsx` sont :
+- **Programme 1 (Sujet attribué à TEDJINI MOHAMED) :** *"Code frequently casts to concrete types, breaking polymorphism and adding fragility"*, illustré par un programme de calcul de primes et de bilans d'employés (`fr.umontpellier.hai913i.refactoring.mohamed.*`).
+- **Programme 2 (Sujet attribué à SACKO DANGUE) :** *"Mixing return codes, nulls, and exceptions creates confusion and bugs"*, illustré par un programme de gestion de réservations de salles (`fr.umontpellier.hai913i.refactoring.sacko.*`).
+
+Pour chaque programme, les trois versions (`initial`, `eclipse`, `llm`) sont présentes dans des packages séparés, compilent avec Maven (Java 17) et possèdent leur propre classe `Main` de test. Les manipulations pratiques dans Eclipse ont été effectuées par TEDJINI MOHAMED sur les deux packages `.eclipse`.
 
 ---
 
-## Partie A — Programme 1 : Conversions explicites vers des types concrets
+## Partie A — Programme 1 : Gestion des primes d'employés (Conversions explicites vers des types concrets)
 
-- **Auteur du programme initial :** TEDJINI MOHAMED (`fr.umontpellier.hai913i.refactoring.mohamed.initial`)
-- **Auteur du refactoring :** SACKO DANGUE (`...mohamed.eclipse` et `...mohamed.llm`)
+- **Packages :**
+  - Version initiale : `fr.umontpellier.hai913i.refactoring.mohamed.initial`
+  - Version Eclipse : `fr.umontpellier.hai913i.refactoring.mohamed.eclipse`
+  - Version LLM : `fr.umontpellier.hai913i.refactoring.mohamed.llm`
 
-### 1. Défaut attribué
+### 1. Défaut attribué et explication
 > *"Code frequently casts to concrete types, breaking polymorphism and adding fragility."*
 
-### 2. Explication simple du défaut
-En programmation orientée objet, lorsqu'une classe mère (`Employe`) possède plusieurs sous-classes (`Developpeur`, `Commercial`, `Manager`), le polymorphisme permet d'appeler une même méthode sur n'importe quel employé sans avoir à connaître sa sous-classe exacte.  
-Le défaut apparaît lorsqu'une classe externe vérifie manuellement le type concret de l'objet avec l'opérateur `instanceof`, puis force sa conversion (*downcast*) vers la sous-classe concrète, par exemple `(Developpeur) employe`, pour accéder à ses méthodes spécifiques. On retrouve aussi ce défaut lorsqu'une méthode déclare un type de retour trop général (`Object`) alors qu'elle manipule un type plus précis (`Employe`), obligeant le code appelant à faire lui-même un cast `(Employe)`.
+Lorsqu'une hiérarchie de classes partage une classe mère (`Employe`) et plusieurs sous-classes (`Developpeur`, `Commercial`, `Manager`), le polymorphisme permet d'appeler une opération commune sur une référence de type `Employe` sans connaître sa classe concrète.  
+Le défaut consiste à tester manuellement le type dynamique de l'objet avec `instanceof`, puis à effectuer une conversion explicite (*downcast*) vers la sous-classe concrète (`(Developpeur) employe`, `(Commercial) employe`, `(Manager) employe`) pour calculer un résultat. On retrouve une seconde forme de ce défaut lorsqu'une méthode déclare un type de retour trop général (`Object`) alors qu'elle retourne toujours un `Employe`, obligeant l'appelant à écrire un cast `(Employe)`.
 
-### 3. Présentation du programme initial
-Le programme initial gère le calcul des primes annuelles et l'édition des lignes de bilan salarial pour une équipe d'employés :
-- `Employe` : classe mère contenant le `nom` et le `salaireBase`.
-- `Developpeur` : sous-classe ajoutant `nbProjetsTermines` et `langagePrincipal`.
-- `Commercial` : sous-classe ajoutant `chiffreAffaires` et `tauxCommission`.
-- `Manager` : sous-classe ajoutant `tailleEquipe` et `objectifsAtteints`.
-- `CalculateurPrime` : classe réalisant les calculs et contenant volontairement le défaut dans trois méthodes :
-  1. `calculerPrime(Employe employe)` : enchaîne trois `if / else if (employe instanceof ...)` suivis de casts explicites `(Developpeur)`, `(Commercial)` et `(Manager)`.
-  2. `genererLigneBilan(Employe employe)` : répète exactement la même structure `instanceof` + cast pour formater la chaîne de caractères décrivant chaque employé.
-  3. `trouverPremierParNom(List<Employe> employes, String nomRecherche)` : retourne `Object` au lieu de `Employe`, ce qui oblige `Main` à écrire `(Employe) calculateur.trouverPremierParNom(...)`.
-- `Main` : teste 5 employés couvrant toutes les catégories et cas limites (0 projet, objectifs atteints ou non, employé trouvé ou absent).
+### 2. Présentation du programme initial (`mohamed.initial`)
+Le programme initial comporte 6 classes :
+- `Employe` : classe mère contenant les attributs `nom` et `salaireBase`.
+- `Developpeur`, `Commercial`, `Manager` : trois sous-classes contenant uniquement leurs attributs spécifiques et leurs *getters* (aucune méthode métier).
+- `CalculateurPrime` : classe qui concentre toute la logique et présente trois manifestations du défaut :
+  1. `calculerPrime(Employe employe)` : enchaîne trois blocs `if / else if (employe instanceof ...)` avec des casts explicites vers `Developpeur`, `Commercial` et `Manager`.
+  2. `genererLigneBilan(Employe employe)` : duplique la même chaîne de tests `instanceof` et de casts pour construire la description textuelle de chaque employé.
+  3. `trouverPremierParNom(List<Employe> employes, String nomRecherche)` : retourne `Object` au lieu de `Employe`, forçant `Main` à faire un cast `(Employe)`.
+- `Main` : teste 5 employés (Alice, Benoit, Chloé, David, Emma), vérifie les primes individuelles, le total des primes (`5550.0 €`) et la recherche par nom.
 
-### 4. Conséquences du défaut
-- **Rupture du polymorphisme et couplage fort** : `CalculateurPrime` doit connaître toutes les sous-classes concrètes d'`Employe` et leurs détails internes (*Feature Envy* / *Switch Statements*, diapositive 26 du cours).
-- **Fragilité lors des évolutions** : si l'on ajoute une nouvelle catégorie d'employé (par exemple `Stagiaire` ou `Technicien`), il faut retrouver et modifier toutes les méthodes contenant des chaînes de `if (employe instanceof ...)`. Si l'on en oublie une, le programme compile mais produit un résultat faux (prime à `0.0` par défaut).
-- **Risque de `ClassCastException`** : multiplier les conversions explicites dans le code client augmente le risque d'erreur de cast à l'exécution.
+### 3. Conséquences du défaut
+- **Violation du principe Ouvert/Fermé et fragilité** : si l'on ajoute une nouvelle sous-classe d'`Employe` (par exemple `Stagiaire`), il faut modifier toutes les méthodes contenant des chaînes `if (employe instanceof ...)`. Tout oubli produit silencieusement un calcul erroné (`0.0`).
+- **Mauvaise répartition des responsabilités (*Feature Envy* / *Switch Statements*, diapositive 26 du cours)** : `CalculateurPrime` manipule directement les données internes des sous-classes au lieu de déléguer le comportement aux objets concernés.
+- **Duplication structurelle** : la chaîne de tests de types est répétée à l'identique dans `calculerPrime` et `genererLigneBilan`.
 
-### 5. Refactorings envisagés et leur intérêt
-En nous appuyant sur le catalogue de Fowler présenté dans les diapositives du cours :
-1. **Replace Conditional with Polymorphism** (diapositives 18 et 26) : remplacer les structures conditionnelles basées sur le type (`instanceof` + cast) par des méthodes polymorphes déclarées dans la classe mère `Employe` (`calculerPrime()` et `getDetailsCategorie()`) et redéfinies dans chaque sous-classe (`Developpeur`, `Commercial`, `Manager`).
-2. **Move Method / Pull Up Method** (diapositives 13 et 21) : déplacer la logique propre aux employés dans la hiérarchie `Employe`. La génération de la ligne de bilan (`genererLigneBilan()`) peut ainsi être placée dans `Employe` en s'appuyant sur `calculerPrime()` et `getDetailsCategorie()`.
-3. **Encapsulate Downcast** (diapositive 19) : modifier le type de retour de `trouverPremierParNom()` pour qu'elle retourne directement `Employe` au lieu de `Object`, supprimant ainsi le cast `(Employe)` dans `Main`.
+### 4. Refactorings appliqués et intérêt
+Les opérations du catalogue de Fowler (présentées dans les diapositives 13, 18, 19, 21 et 26 du cours) appliquées pour corriger ce défaut sont :
+1. **Encapsulate Downcast** (diapositive 19) : spécialiser le type de retour de `trouverPremierParNom` de `Object` vers `Employe` pour décharger le code client (`Main`) du cast explicite.
+2. **Extract Method + Move Method + Pull Up Method** (diapositives 11, 13 et 21) : extraire le calcul propre à une sous-classe, le déplacer dans cette sous-classe, puis faire remonter la déclaration `public abstract double calculerPrime()` dans la classe mère `Employe`.
+3. **Replace Conditional with Polymorphism** (diapositive 18) : remplacer les structures conditionnelles `if / else if (instanceof)` de `CalculateurPrime` par des appels polymorphes sur `Employe` (`employe.calculerPrime()` et la méthode de description du bilan).
 
-**Intérêt :** chaque sous-classe devient responsable de sa propre formule de prime et de sa description. `CalculateurPrime` ne contient plus aucun `instanceof` ni aucun cast, et l'ajout futur d'une nouvelle sous-classe d'`Employe` ne nécessite plus de modifier `CalculateurPrime`.
+### 5. Procédure réellement appliquée sous Eclipse (`mohamed.eclipse`)
+Les manipulations ont été réalisées dans Eclipse et illustrées par les 15 captures du dossier `preuves/eclipse/mohamed/` :
+1. **Vérification avant refactoring** (`00_mohamed_tests_avant.png` et `01_mohamed_code_initial.png`) : exécution initiale de `Main` dans Eclipse confirmant le bon fonctionnement de départ.
+2. **Application de *Encapsulate Downcast* avec `Change Method Signature`** (`02_mohamed_change_signature_return_type.png`) :
+   - Menu **Refactor → Change Method Signature...** (`Alt+Shift+C`) sur `trouverPremierParNom` pour remplacer le type de retour `Object` par `Employe`.
+   - Suppression manuelle du cast `(Employe)` devenu inutile dans `Main.java`.
+3. **Amorçage de *Replace Conditional with Polymorphism* via `Extract Method`, `Move` et `Pull Up`** :
+   - Sélection de `dev.getNbProjetsTermines() * 300.0` dans `CalculateurPrime.calculerPrime`, puis **Refactor → Extract Method...** pour créer `calculerPrimeDeveloppeur(Developpeur dev)` (`03_mohamed_extract_method.png`).
+   - **Refactor → Move...** sur cette méthode extraite pour la déplacer dans `Developpeur` (`04_mohamed_move_method_developpeur.png` et `04_mohamed_move_method_developpeur_v2.png`), puis renommage en `calculerPrime()`.
+   - **Refactor → Pull Up...** depuis `Developpeur` vers `Employe` en sélectionnant l'action **declare abstract in destination** (`05_mohamed_pull_up_method.png`). Comme le montrent les aperçus (`v2`, `v3`, `v4`, `v5`), Eclipse a automatiquement rendu la classe `Employe` abstraite, ajouté `public abstract double calculerPrime();` dans `Employe`, et généré les squelettes `@Override public double calculerPrime()` avec un `TODO` dans `Commercial` et `Manager`.
+4. **Partie réalisée manuellement dans Eclipse** :
+   - Eclipse ne pouvant pas deviner ni déplacer automatiquement les autres branches du `if / else if` dans les méthodes générées par `Pull Up`, les formules de `Commercial.calculerPrime()` et `Manager.calculerPrime()` ont été complétées à la main (`05_mohamed_commercial_refactore.png`, `05_mohamed_manager_refactore.png`).
+   - Pour le bilan, une méthode polymorphe `genererDescriptionBilan()` a été ajoutée dans `Employe` (retournant `"[Employé] " + getNom()`) et redéfinie dans `Developpeur`, `Commercial` et `Manager`.
+   - Enfin, dans `CalculateurPrime.java`, les deux chaînes de `if (employe instanceof ...)` ont été remplacées manuellement par `employe.calculerPrime()` (avec une garde `if (employe == null) return 0.0;`) et par `employe.genererDescriptionBilan()` (`06_mohamed_code_refactore.png`).
+5. **Validation finale sous Eclipse** (`07_mohamed_console_tests_ok.png`) : l'exécution de `mohamed.eclipse.Main` valide l'ensemble des tests.
 
-### 6. Opérations proposées pour Eclipse
-Dans Eclipse (menu `Refactor`), toutes ces transformations ne sont pas automatisées en une seule commande :
-- **Opérations disponibles dans le menu `Refactor` d'Eclipse :**
-  - `Extract Method` (`Alt+Shift+M`) : permet d'isoler chaque branche du `if (employe instanceof ...)` dans une méthode dédiée prenant directement le type concret ou d'extraire le formatage spécifique.
-  - `Move...` (`Alt+Shift+V`) : une fois une méthode extraite avec un paramètre de type `Developpeur`, `Commercial` ou `Manager`, Eclipse sait la déplacer automatiquement dans la sous-classe correspondante.
-  - `Pull Up...` : permet de faire remonter une déclaration de méthode (ou de la déclarer abstraite) d'une sous-classe vers la classe mère `Employe`.
-  - `Change Method Signature...` (`Alt+Shift+C`) : permet de changer le type de retour de `trouverPremierParNom` de `Object` vers `Employe`.
-- **Opérations non automatisées directement par Eclipse :**
-  - Eclipse ne possède pas de commande automatique *"Replace Conditional with Polymorphism"* ni *"Encapsulate Downcast"*.
-  - La suppression du bloc conditionnel `if / else if (instanceof)` et des variables castées (`Developpeur dev = (Developpeur) employe;`), ainsi que le remplacement par l'appel polymorphe `employe.calculerPrime()`, doivent être achevés à la main en combinant `Extract Method`, `Move`, `Pull Up` et une édition manuelle.
+### 6. Opérations réalisées par le LLM (`mohamed.llm`)
+Le LLM a appliqué directement la cible polymorphe sur l'ensemble des classes :
+- `Employe` a été déclarée `abstract` avec deux méthodes abstraites : `calculerPrime()` et `getDetailsCategorie()`.
+- Le LLM a également déplacé l'assemblage complet de la ligne de bilan (`genererLigneBilan()`) dans la classe mère `Employe`, tandis que `CalculateurPrime.genererLigneBilan(Employe)` se contente de déléguer à `employe.genererLigneBilan()`.
+- `trouverPremierParNom` a vu son type de retour passer de `Object` à `Employe`, et les casts `(Employe)` ont été retirés de `Main`.
 
-*(La procédure exacte pas à pas est détaillée dans `rapport/GUIDE_ECLIPSE.md`.)*
+### 7. Comparaison détaillée des trois versions (`mohamed.initial`, `mohamed.eclipse`, `mohamed.llm`)
 
-### 7. Opérations réellement réalisées par le LLM
-Dans le package `fr.umontpellier.hai913i.refactoring.mohamed.llm`, le LLM a appliqué les transformations suivantes :
-1. Transformation de `Employe` en classe abstraite (`public abstract class Employe`) avec ajout des signatures abstraites `public abstract double calculerPrime();` et `public abstract String getDetailsCategorie();`.
-2. Ajout de la méthode commune `genererLigneBilan()` dans `Employe`, factorisant l'assemblage `getDetailsCategorie() + " -> Salaire : ... Prime : ... Total : ..."`.
-3. Redéfinition (`@Override`) de `calculerPrime()` et `getDetailsCategorie()` dans `Developpeur`, `Commercial` et `Manager` en utilisant directement leurs attributs privés, sans aucun cast.
-4. Simplification de `CalculateurPrime` : `calculerPrime(Employe)` appelle `employe.calculerPrime()`, et `genererLigneBilan(Employe)` appelle `employe.genererLigneBilan()`. Tous les `instanceof` et tous les casts vers les sous-classes ont disparu.
-5. Application de *Encapsulate Downcast* sur `trouverPremierParNom(...)` dont le type de retour passe de `Object` à `Employe`.
-6. Suppression du cast `(Employe)` aux lignes d'appel de `trouverPremierParNom` dans `Main.java`.
+| Critère | `mohamed.initial` | `mohamed.eclipse` | `mohamed.llm` |
+| :--- | :--- | :--- | :--- |
+| **Nombre de tests `instanceof`** | 6 (3 dans `calculerPrime`, 3 dans `genererLigneBilan`) | **0** | **0** |
+| **Nombre de casts explicites** | 8 (6 dans `CalculateurPrime`, 2 dans `Main`) | **0** | **0** |
+| **Classe `Employe`** | Concrète, sans méthode métier | Abstraite (`calculerPrime()` abstraite, `genererDescriptionBilan()` concrète par défaut) | Abstraite (`calculerPrime()` et `getDetailsCategorie()` abstraites, `genererLigneBilan()` concrète) |
+| **Emplacement du formatage du salaire/total** | Dans chaque branche `if/else` de `CalculateurPrime` (dupliqué 4 fois) | Factorisé une seule fois dans `CalculateurPrime.genererLigneBilan(Employe)` | Factorisé une seule fois dans `Employe.genererLigneBilan()` |
+| **Protection contre `employe == null`** | Implicite via `instanceof` (retourne `0.0`) | Explicite (`if (employe == null) return 0.0;`) dans `CalculateurPrime.calculerPrime` | Aucune (lève `NullPointerException` si `employe` est `null`) |
+| **Accès aux champs dans les sous-classes** | Depuis l'extérieur via *getters* après cast | Via les *getters* internes (`getChiffreAffaires()`, `getTailleEquipe()`, etc.) | Accès direct aux attributs privés de la sous-classe |
 
-### 8. Résultats des tests et modifications de `Main` (Programme 1)
-- **Modification de `Main` :** la seule modification dans `mohamed.llm.Main` est la suppression du cast devenu inutile `(Employe)` devant `calculateur.trouverPremierParNom(...)` :
-  - Avant : `Employe trouve = (Employe) calculateur.trouverPremierParNom(employes, "Chloé Bernard");`
-  - Après : `Employe trouve = calculateur.trouverPremierParNom(employes, "Chloé Bernard");`
-- **Résultats observables :** toutes les lignes de bilan affichées, toutes les primes individuelles (`1200.0`, `0.0`, `2500.0`, `1400.0`, `450.0`), le total des primes (`5550.0 €`) et les résultats de recherche sont **strictement identiques** entre la version initiale et la version LLM (voir `preuves/resultats_execution.txt`).
-
-### 9. Retour d'expérience sur la manipulation sous Eclipse (Programme 1)
-> **À compléter après manipulation Eclipse par SACKO DANGUE :**
-> - *Indiquer ici si les étapes `Extract Method` -> `Move` -> `Pull Up` ont fonctionné comme prévu dans Eclipse.*
-> - *Préciser quelles parties ont dû être modifiées à la main.*
-> - *Joindre les références aux captures d'écran placées dans `preuves/eclipse/mohamed/`.*
-> - *Confirmer que l'exécution de `mohamed.eclipse.Main` après refactoring affiche `[SUCCÈS]`.*
+**Analyse comparative (Eclipse vs LLM sur le Programme 1) :**
+- La version **Eclipse** n'est pas inférieure à la version **LLM** ; sur deux points précis, elle est même légèrement plus prudente :
+  1. Dans `mohamed.eclipse.CalculateurPrime.calculerPrime(Employe)`, la garde `if (employe == null) return 0.0;` préserve exactement le comportement du programme initial dans le cas où une référence `null` serait passée à `calculerPrime`, alors que `mohamed.llm` appellerait directement `employe.calculerPrime()` et lèverait une `NullPointerException`.
+  2. Dans `mohamed.eclipse`, `CalculateurPrime` conserve la responsabilité de mettre en forme la partie financière du bilan (`" -> Salaire : ... Prime : ... Total : ..."`), tandis que `Employe` fournit sa description (`genererDescriptionBilan()`). Cela justifie mieux l'existence de la classe `CalculateurPrime` que dans `mohamed.llm`, où `CalculateurPrime` devient un simple passe-plat (*Middle Man*).
+- Une différence mineure de chaîne de caractères existe dans `mohamed.eclipse.Manager.genererDescriptionBilan()` : le mot `"Equipe"` a été saisi sans accent lors de l'édition manuelle dans Eclipse (`"(Equipe : 6..."`), contre `"(Équipe : 6..."` dans `initial` et `llm`. Cela n'affecte aucun calcul numérique ni aucun test.
 
 ---
 
-## Partie B — Programme 2 : Mélange incohérent de codes de retour, `null` et exceptions
+## Partie B — Programme 2 : Système de réservation de salles (Mélange de codes de retour, `null` et exceptions)
 
-- **Auteur du programme initial :** SACKO DANGUE (`fr.umontpellier.hai913i.refactoring.sacko.initial`)
-- **Auteur du refactoring :** TEDJINI MOHAMED (`...sacko.eclipse` et `...sacko.llm`)
+- **Packages :**
+  - Version initiale : `fr.umontpellier.hai913i.refactoring.sacko.initial`
+  - Version Eclipse : `fr.umontpellier.hai913i.refactoring.sacko.eclipse`
+  - Version LLM : `fr.umontpellier.hai913i.refactoring.sacko.llm`
 
-### 1. Défaut attribué
+### 1. Défaut attribué et explication
 > *"Mixing return codes, nulls, and exceptions creates confusion and bugs."*
 
-### 2. Explication simple du défaut
-Lorsqu'une opération échoue dans un programme Java (paramètre invalide, ressource introuvable, règle métier non respectée), le concepteur doit choisir une convention claire pour signaler l'erreur.  
-Le défaut consiste à mélanger dans une même classe trois mécanismes différents :
-- retourner un **code entier spécial** (`-1`, `-2`, `-3` pour les erreurs, `0` pour le succès) ;
-- retourner **`null`** lorsqu'un problème survient ;
-- lever une **exception** (`IllegalArgumentException`) pour d'autres erreurs.
+Ce défaut survient lorsqu'un même composant logiciel utilise simultanément trois conventions hétérogènes pour signaler ses erreurs :
+- des **codes de retour entiers** (`0` pour le succès, `-1`, `-2`, `-3` pour différentes erreurs) ;
+- des **valeurs `null`** retournées à la place d'un objet attendu ;
+- des **exceptions** (`IllegalArgumentException`) pour d'autres erreurs.
 
-L'appelant ne sait plus comment tester le bon déroulement d'un appel : il doit à la fois entourer ses appels de `try / catch`, vérifier si le résultat vaut `null` et comparer des entiers avec des constantes d'erreur.
+Cette incohérence complique l'utilisation de l'API : le code appelant doit combiner des tests sur des entiers, des tests `!= null` et des blocs `try / catch`. De plus, lorsqu'une méthode convertit un code d'erreur en retour `null` (comme le fait `creerReservation` dans la version initiale), la cause exacte de l'échec est perdue.
 
-### 3. Présentation du programme initial
-Le programme initial gère la réservation de salles à l'université :
-- `Salle` : représente une salle avec son `code`, sa `capaciteMax` et ses `placesOccupees`.
-- `Reservation` : représente une réservation validée (`reference`, `nomClient`, `codeSalle`, `nbPersonnes`).
-- `ServiceReservation` : centralise les opérations et contient volontairement le mélange des trois mécanismes d'erreur :
-  1. **Exceptions** : si `nomClient` est vide ou si `nbPersonnes <= 0`, `verifierEtReserver` lève une `IllegalArgumentException`.
-  2. **Codes de retour entiers** : `verifierEtReserver` retourne `-1` (`ERREUR_SALLE_INTROUVABLE`) si la salle n'existe pas, `-2` (`ERREUR_CAPACITE_INSUFFISANTE`) s'il manque des places, et `0` (`SUCCES`) si tout va bien. De même, `annulerReservation` retourne `-3` (`ERREUR_RESERVATION_INTROUVABLE`) ou `0`.
-  3. **Retours `null`** : `creerReservation` appelle `verifierEtReserver` et convertit tout code différent de `0` en retour `null` (sans préciser si l'échec vient de la salle ou de la capacité). `chercherReservation` retourne également `null` si la référence est vide ou introuvable.
-- `Main` : teste les réservations valides, une salle inconnue, un dépassement de capacité, un nom de client vide, un nombre de personnes nul, ainsi que la recherche et l'annulation d'une réservation existante ou inexistante.
+### 2. Présentation du programme initial (`sacko.initial`)
+Le programme initial comporte 4 classes (`Salle`, `Reservation`, `ServiceReservation`, `Main`). Dans `ServiceReservation`, les erreurs sont traitées de manière incohérente :
+1. **Exceptions** : `verifierEtReserver` lève `IllegalArgumentException` si `nomClient` est vide ou si `nbPersonnes <= 0`.
+2. **Codes d'erreur entiers** : `verifierEtReserver` retourne `-1` (`ERREUR_SALLE_INTROUVABLE`) si la salle n'existe pas, `-2` (`ERREUR_CAPACITE_INSUFFISANTE`) s'il manque des places, et `0` (`SUCCES`) sinon. De même, `annulerReservation` retourne `-3` (`ERREUR_RESERVATION_INTROUVABLE`) ou `0`.
+3. **Retours `null`** : `trouverSalle`, `creerReservation` et `chercherReservation` retournent `null` en cas d'échec.
 
-### 4. Conséquences du défaut
-- **Confusion et perte d'information** : lorsque `creerReservation` retourne `null`, l'appelant a perdu la cause exacte de l'erreur (était-ce une salle inexistante `-1` ou une capacité insuffisante `-2` ?).
-- **Risque élevé de bugs (`NullPointerException` ou erreurs silencieuses)** : si le développeur appelant oublie de tester le code de retour d'`annulerReservation` ou oublie un `if (res != null)` après `creerReservation`, le programme continue son exécution dans un état incohérent ou plante plus loin.
-- **Code client lourd et répétitif** : `Main` est obligé de combiner trois styles de vérification différents.
+### 3. Refactorings appliqués et intérêt
+Conformément à la diapositive 20 du cours (*Making Method Calls Simpler*), nous avons appliqué :
+- **Replace Error Code with Exception** :
+  - Suppression des constantes entières `SUCCES`, `ERREUR_SALLE_INTROUVABLE`, `ERREUR_CAPACITE_INSUFFISANTE` et `ERREUR_RESERVATION_INTROUVABLE`.
+  - Changement de signature (*Change Method Signature*) de `verifierEtReserver` et `annulerReservation` : leur type de retour passe de `int` à `void`.
+  - Remplacement des retours de codes négatifs et des retours `null` par deux exceptions standards du JDK :
+    - `IllegalArgumentException` : paramètre invalide (nom vide, code vide, référence vide, `nbPersonnes <= 0`) ou identifiant introuvable (salle ou réservation inexistante).
+    - `IllegalStateException` : capacité disponible de la salle insuffisante pour accueillir le groupe demandé.
 
-### 5. Refactorings envisagés et leur intérêt
-En nous appuyant sur les diapositives du cours :
-1. **Replace Error Code with Exception** (diapositive 20 : catégorie *Making Method Calls Simpler*) :
-   - Remplacer les retours de codes entiers (`-1`, `-2`, `-3`, `0`) dans `verifierEtReserver` et `annulerReservation` par un type de retour `void` et le lancement d'exceptions lorsqu'une condition d'erreur est détectée.
-   - Remplacer les retours `null` d'erreur dans `creerReservation`, `chercherReservation` et `trouverSalle` par des exceptions explicites.
-2. **Choix d'exceptions standards de Java** (sans ajouter d'architecture complexe d'exceptions personnalisées) :
-   - `IllegalArgumentException` : lorsque les arguments fournis sont invalides ou font référence à un identifiant inexistant (nom vide, nombre de personnes `<= 0`, code salle introuvable, référence de réservation introuvable).
-   - `IllegalStateException` : lorsque la salle existe et que les arguments sont syntaxiquement valides, mais que l'état courant de la salle (places disponibles insuffisantes) ne permet pas d'accepter la réservation.
+### 4. Procédure réellement appliquée sous Eclipse (`sacko.eclipse`)
+Les manipulations effectuées sous Eclipse sont documentées par les 8 captures du dossier `preuves/eclipse/sacko/` :
+1. **Vérification de l'état initial** (`00_sacko_tests_avant.png` et `01_sacko_code_initial.png`) : exécution de `sacko.eclipse.Main` avant refactoring.
+2. **Utilisation du menu `Refactor → Change Method Signature...` (`Alt+Shift+C`)** :
+   - Sur `verifierEtReserver` : changement du type de retour de `int` à `void` (`02_sacko_change_signature_verifierEtReserver.png` et prévisualisation `03_sacko_previsualisation_refactoring.png`).
+   - Sur `annulerReservation` : changement du type de retour de `int` à `void` (prévisualisation `04_sacko_previsualisation_annulerReservation.png`).
+3. **Modifications manuelles dans `ServiceReservation.java`** (`04_sacko_code_service_refactore.png`) :
+   - Comme Eclipse ne possède pas de refactoring automatique *"Replace Error Code with Exception"*, le passage de `int` à `void` a immédiatement mis en évidence (par des erreurs de compilation dans l'éditeur Eclipse) les instructions `return ERREUR_...;` et `return SUCCES;` ainsi que les appels `int code = ...` dans `Main`.
+   - Les 4 constantes de codes d'erreur ont été supprimées.
+   - `trouverSalle` et `chercherReservation` ont été modifiées pour vérifier que l'identifiant n'est pas vide et lever une `IllegalArgumentException` s'il est introuvable (plus aucun retour `null`).
+   - Dans `verifierEtReserver`, le test de capacité lève désormais `throw new IllegalStateException("Capacité insuffisante dans la salle " + codeSalle);`.
+   - `creerReservation` appelle simplement `verifierEtReserver(nomClient, codeSalle, nbPersonnes)` puis retourne `reservations.get(reservations.size() - 1)`.
+4. **Adaptation de `Main.java` et validation des tests** (`05_sacko_main_adapte.png` et `06_sacko_console_tests_ok.png`) :
+   - Les vérifications de codes (`-1`, `-2`, `-3`, `0`) et de `null` ont été remplacées par des blocs `try / catch` vérifiant que `IllegalArgumentException` et `IllegalStateException` sont bien levées.
+   - L'exécution dans Eclipse affiche `[SUCCÈS] Tous les tests de la version Eclipse (Sacko) sont validés.`.
 
-**Intérêt :** le contrat de `ServiceReservation` devient uniforme. Soit une méthode réussit et renvoie toujours un objet valide (ou se termine normalement si elle est `void`), soit elle lève une exception portant un message explicite sur la cause de l'échec.
+### 5. Opérations réalisées par le LLM (`sacko.llm`)
+Le LLM a appliqué la même stratégie d'harmonisation par exceptions (`IllegalArgumentException` et `IllegalStateException`), mais a inversé le sens de délégation entre `verifierEtReserver` et `creerReservation` :
+- Dans `sacko.llm.ServiceReservation`, toute la logique de validation et de création a été placée dans `creerReservation(...)` qui instancie `Reservation nouvelle`, l'ajoute à la liste et la retourne directement ; `verifierEtReserver(...)` se contente d'appeler `creerReservation(...)` en ignorant la valeur de retour.
+- Le LLM a également ajouté une garde `if (salle == null) throw new IllegalArgumentException(...)` dans `ajouterSalle(Salle)` et un message d'exception plus détaillé lors d'un dépassement de capacité (`"(demandé : 15, disponible : 10)"`).
 
-### 6. Opérations proposées pour Eclipse
-- **Opérations disponibles dans le menu `Refactor` d'Eclipse :**
-  - `Change Method Signature...` (`Alt+Shift+C`) : permet de modifier le type de retour de `verifierEtReserver` et `annulerReservation` de `int` à `void`.
-- **Opérations non automatisées directement par Eclipse :**
-  - Eclipse ne propose pas d'opération automatique *"Replace Error Code with Exception"*.
-  - Lorsque l'on change le type de retour de `int` à `void` avec `Change Method Signature`, Eclipse met à jour la signature mais signale ensuite des erreurs de compilation sur les instructions `return ERREUR_...;` et sur les affectations `int code = service.verifierEtReserver(...);` dans `Main`.
-  - Il faut donc remplacer manuellement les `return ERREUR_...;` et `return null;` par des instructions `throw new IllegalArgumentException(...)` ou `throw new IllegalStateException(...)`, supprimer les constantes entières devenues inutiles, et adapter les appels dans `Main` avec des blocs `try / catch`.
+### 6. Comparaison détaillée des trois versions (`sacko.initial`, `sacko.eclipse`, `sacko.llm`)
 
-*(La procédure détaillée étape par étape figure dans `rapport/GUIDE_ECLIPSE.md`.)*
+| Critère | `sacko.initial` | `sacko.eclipse` | `sacko.llm` |
+| :--- | :--- | :--- | :--- |
+| **Mécanismes d'erreur utilisés** | 3 mélangés (codes `-1/-2/-3`, `null`, exceptions) | **1 seul unifié** (exceptions standards) | **1 seul unifié** (exceptions standards) |
+| **Nombre de `return null;`** | 4 | **0** | **0** |
+| **Nombre d'instructions `throw new`** | 2 (dans `ServiceReservation`) | **6** (dans `ServiceReservation`) | **7** (dans `ServiceReservation`) |
+| **Signature de `verifierEtReserver`** | `int verifierEtReserver(...)` | `void verifierEtReserver(...)` | `void verifierEtReserver(...)` |
+| **Signature de `annulerReservation`** | `int annulerReservation(String)` | `void annulerReservation(String)` | `void annulerReservation(String)` |
+| **Sens de délégation** | `creerReservation` appelle `verifierEtReserver` | `creerReservation` appelle `verifierEtReserver` puis lit le dernier élément de la liste | `verifierEtReserver` appelle `creerReservation` qui retourne directement l'objet `Reservation` créé |
 
-### 7. Opérations réellement réalisées par le LLM
-Dans le package `fr.umontpellier.hai913i.refactoring.sacko.llm`, le LLM a effectué les transformations suivantes :
-1. Suppression des quatre constantes de codes de retour (`SUCCES`, `ERREUR_SALLE_INTROUVABLE`, `ERREUR_CAPACITE_INSUFFISANTE`, `ERREUR_RESERVATION_INTROUVABLE`).
-2. Modification de `trouverSalle(String)` et `chercherReservation(String)` pour qu'elles lèvent une `IllegalArgumentException` avec un message précis lorsque le code ou la référence est vide ou introuvable, au lieu de retourner `null`.
-3. Application de *Replace Error Code with Exception* sur `creerReservation` et `verifierEtReserver` :
-   - `verifierEtReserver` passe d'un type de retour `int` à `void` et délègue à `creerReservation`.
-   - Si la capacité disponible est inférieure au nombre de personnes demandé, `creerReservation` lève désormais une `IllegalStateException` explicite au lieu de renvoyer `-2` ou `null`.
-   - En cas de succès, `creerReservation` retourne directement l'objet `Reservation` nouvellement créé (jamais `null`).
-4. Application de *Replace Error Code with Exception* sur `annulerReservation(String)` : le type de retour passe de `int` à `void`, et l'appel interne à `chercherReservation(reference)` lève automatiquement une `IllegalArgumentException` si la réservation à annuler n'existe pas.
-
-### 8. Résultats des tests et modifications de `Main` (Programme 2)
-- **Modification de `Main` :** contrairement au programme 1 où la signature publique ne changeait presque pas, l'opération *Replace Error Code with Exception* modifie volontairement le contrat public de `ServiceReservation` (`int` -> `void`, et exceptions au lieu de codes `-1/-2/-3` ou de `null`).  
-  La méthode `main` de `sacko.llm.Main` a donc été adaptée pour vérifier la capture des exceptions (`try / catch (IllegalArgumentException e)` et `try / catch (IllegalStateException e)`) sur les cas d'erreur 2, 3 et 5, tout en conservant **exactement les mêmes scénarios fonctionnels et les mêmes données de test** (`A101`, `B202`, `Z999`, `RES-1`, `RES-2`, `RES-999`).
-- **Résultats observables :** l'état des salles (`10` places restantes dans `A101`, `2` dans `B202`, puis retour à `30` places dans `A101` après annulation de `RES-1`) et le nombre final de réservations actives (`1`) sont **strictement identiques** entre la version initiale et la version LLM (voir `preuves/resultats_execution.txt`).
-
-### 9. Retour d'expérience sur la manipulation sous Eclipse (Programme 2)
-> **À compléter après manipulation Eclipse par TEDJINI MOHAMED :**
-> - *Indiquer ici l'utilisation de `Change Method Signature` dans Eclipse pour passer les méthodes de `int` à `void`.*
-> - *Expliquer comment les erreurs de compilation signalées par Eclipse ont guidé le remplacement manuel des `return -1/-2/-3` et `return null` par des `throw new ...` et la mise à jour de `Main`.*
-> - *Joindre les références aux captures d'écran placées dans `preuves/eclipse/sacko/`.*
-> - *Confirmer que l'exécution de `sacko.eclipse.Main` après refactoring affiche `[SUCCÈS]`.*
+**Analyse comparative (Eclipse vs LLM sur le Programme 2) :**
+- La version **Eclipse** (`sacko.eclipse`) montre bien comment un développeur procède à partir du code existant : en conservant la structure de `verifierEtReserver` et en faisant appel à `verifierEtReserver` depuis `creerReservation`, la modification est minimale et très proche de l'historique du code initial.
+- En contrepartie, sur ce second programme, l'inversion de délégation proposée par le **LLM** (`creerReservation` crée et retourne directement l'objet `nouvelle`, et `verifierEtReserver` l'appelle) est légèrement plus propre que `return reservations.get(reservations.size() - 1);` conservé dans `sacko.eclipse`.
 
 ---
 
-## Partie C — Comparaison structurée : Refactoring sous Eclipse vs Refactoring par LLM
+## Partie C — Vérification quantitative et résultats des tests sur les 6 versions
 
-### 1. Tableau comparatif
+### 1. Métriques quantitatives mesurées sur le code source
+Les métriques ci-dessous ont été calculées automatiquement par analyse des 30 fichiers `.java` du projet (en comptant le nombre total de lignes, les lignes de code effectives hors commentaires et lignes vides, ainsi que les occurrences de `instanceof`, `return null;` et `throw new`) :
 
-| Critère de comparaison | Refactoring assisté par l'IDE (Eclipse) | Refactoring intégral par un LLM |
-| :--- | :--- | :--- |
-| **Nature des opérations prises en charge** | Très efficace sur les refactorings structurels atomiques (*Rename*, *Extract Method*, *Move Method*, *Pull Up*, *Change Method Signature*). | Capable de réaliser des refactorings conceptuels ou composés (*Replace Conditional with Polymorphism*, *Replace Error Code with Exception*) en une seule étape. |
-| **Compréhension de l'intention métier** | Aucune : l'IDE manipule l'arbre syntaxique (AST) selon les instructions explicites de l'utilisateur. | Élevée : le LLM identifie le *code smell*, choisit l'exception standard appropriée (`IllegalStateException` vs `IllegalArgumentException`) et reformule les méthodes. |
-| **Garantie de préservation syntaxique** | Très forte sur les opérations natives : Eclipse vérifie les préconditions et met à jour les références automatiquement. | Non garantie par construction : dépend de la vérification par compilation (`mvn test-compile`) et par exécution des tests (`Main`). |
-| **Adaptation du code appelant (`Main`)** | Partielle : `Change Method Signature` met à jour l'appel, mais ne transforme pas automatiquement un test `if (code == -1)` en bloc `try / catch`. | Complète : le LLM réécrit simultanément la classe refactorée et adapte les tests dans `Main` au nouveau mécanisme d'exception. |
-| **Effort demandé au développeur** | Effort de décomposition en petites étapes atomiques + édition manuelle pour les parties non automatisées. | Effort de spécification (prompt précis), de relecture critique et de validation par les tests. |
+| Package | Fichiers `.java` | Lignes totales | Lignes de code (LOC hors commentaires) | Occurrences de `instanceof` | Occurrences de `return null;` | Occurrences de `throw new` (service + tests) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `mohamed.initial` | 6 | 279 | 175 | 6 | 1 | 2 |
+| `mohamed.eclipse` | 6 | 288 | 187 | **0** | 1 | 2 |
+| `mohamed.llm` | 6 | 291 | 181 | **0** | 1 | 2 |
+| `sacko.initial` | 4 | 314 | 209 | 0 | 4 | 4 |
+| `sacko.eclipse` | 4 | 319 | 226 | 0 | **0** | **9** |
+| `sacko.llm` | 4 | 331 | 230 | 0 | **0** | **10** |
 
-### 2. Avantages et limites de l'approche Eclipse
-- **Avantages :**
-  - Les transformations atomiques du menu `Refactor` (`Move`, `Pull Up`, `Extract Method`, `Change Method Signature`) sont déterministes et sûres.
-  - Le compilateur incrémental d'Eclipse signale immédiatement chaque ligne impactée par un changement de signature, ce qui guide le développeur pas à pas.
-  - Favorise une bonne compréhension de la mécanique interne du refactoring (comme décrit par Fowler).
-- **Inconvénients et limites :**
-  - Plusieurs refactorings classiques du cours (*Replace Conditional with Polymorphism*, *Encapsulate Downcast*, *Replace Error Code with Exception*) n'existent pas sous forme de bouton unique dans le menu `Refactor`.
-  - Pour passer d'une chaîne de `if (instanceof)` au polymorphisme, il faut enchaîner manuellement plusieurs opérations (`Extract Method`, puis `Move`, puis `Pull Up`) et nettoyer soi-même la condition résiduelle.
+*Remarque sur `return null;` dans le programme 1 (Mohamed) :* l'unique `return null;` conservé dans les trois versions de Mohamed est celui de `trouverPremierParNom` lorsqu'un employé recherché ne figure pas dans la liste (comportement normal testé par `Main`). En revanche, dans le programme 2 (Sacko), les 4 `return null;` qui masquaient des erreurs de réservation ont tous été éliminés (`0` dans `sacko.eclipse` et `sacko.llm`).
 
-### 3. Avantages et limites de l'approche LLM
-- **Avantages :**
-  - Rapidité et vision globale : le LLM comprend immédiatement le lien entre le *code smell* et la cible de conception (polymorphisme ou unification des exceptions).
-  - Il réalise de bout en bout les refactorings composés qui demandent à la fois de créer des méthodes abstraites, de déplacer la logique dans plusieurs sous-classes et de nettoyer la classe appelante.
-  - Il explique clairement les transformations réalisées en utilisant le vocabulaire du catalogue de Fowler.
-- **Inconvénients et limites :**
-  - Comme souligné dans les diapositives du cours (diapositives 4, 7 et 30 — travaux de Liu et al. 2025, Xu et al. 2026), un LLM n'offre pas de garantie formelle de préservation du comportement : il peut modifier involontairement un format d'affichage ou une règle de calcul si l'on ne vérifie pas son code.
-  - Il est indispensable de disposer de tests déterministes (comme nos vérifications dans `Main`) et de relire chaque modification pour s'assurer qu'aucune fonctionnalité n'a été altérée.
+### 2. Résultats réels de compilation et d'exécution des 6 méthodes `main`
+La commande `./scripts/verifier_tout.sh` exécute `mvn clean test-compile` (avec `--release 17`) puis lance les 6 classes `Main`. Toutes les traces sont enregistrées dans `preuves/resultats_execution.txt` :
 
-### 4. Conclusion générale
-Ce TP montre que les deux approches sont complémentaires :
-- **Eclipse** apporte la rigueur mécanique et la sécurité sur les opérations élémentaires de restructuration.
-- **Le LLM** permet d'automatiser des refactorings de plus haut niveau que l'IDE ne sait pas exécuter seul (comme le passage au polymorphisme ou l'harmonisation de la gestion d'erreurs par exceptions), à condition que le développeur maîtrise les concepts du refactoring pour guider l'outil, contrôler les changements de signatures publiques et valider la préservation du comportement par des tests.
+1. **`mohamed.initial.Main`** : compile et réussit tous les tests (Alice : `1200.0 €`, Benoit : `0.0 €`, Chloé : `2500.0 €`, David : `1400.0 €`, Emma : `450.0 €`, Total : `5550.0 €`, recherche de Chloé et d'un employé inconnu).
+2. **`mohamed.eclipse.Main`** : compile et réussit tous les tests avec **exactement les mêmes résultats numériques** (`1200.0`, `0.0`, `2500.0`, `1400.0`, `450.0`, Total : `5550.0 €`), sans aucun cast ni `instanceof`.
+3. **`mohamed.llm.Main`** : compile et réussit tous les tests avec **exactement les mêmes résultats numériques** (`5550.0 €`), sans aucun cast ni `instanceof`.
+4. **`sacko.initial.Main`** : compile et réussit tous les tests (création de `RES-1` et `RES-2`, test des codes `-1`, `-2`, `-3`, `0`, des retours `null` et des `IllegalArgumentException`, état final : `30` places dans `A101` après annulation et `1` réservation active).
+5. **`sacko.eclipse.Main`** : compile et réussit tous les tests. Les scénarios d'erreur (salle `Z999` inconnue, capacité de `15` places demandée sur `10` disponibles dans `A101`, client vide, `0` personne, recherche et annulation de `RES-999`) lèvent tous les exceptions attendues (`IllegalArgumentException` et `IllegalStateException`), et l'état final des salles (`30` places dans `A101`, `1` réservation active) est identique.
+6. **`sacko.llm.Main`** : compile et réussit tous les tests sur les mêmes scénarios fonctionnels et le même état final.
 
+---
+
+## Partie D — Bilan général : IDE (Eclipse) vs LLM
+
+### 1. Ce que montre notre expérimentation sous Eclipse
+- **Points forts d'Eclipse :**
+  - Les opérations du menu `Refactor` (`Change Method Signature`, `Extract Method`, `Move Method`, `Pull Up`) sont sûres, prévisibles et offrent une fenêtre de prévisualisation (*Preview*) très claire qui montre l'impact exact sur chaque fichier du package.
+  - En particulier, l'assistant **Pull Up** avec l'option *declare abstract in destination* s'est révélé très utile sur le programme 1 : il a transformé `Employe` en classe abstraite et créé automatiquement les méthodes `@Override` dans `Commercial` et `Manager`.
+  - Sur le programme 2, après `Change Method Signature` (`int` -> `void`), la vérification syntaxique temps réel d'Eclipse a immédiatement signalé toutes les lignes de `ServiceReservation` et de `Main` qui utilisaient encore les anciens codes de retour.
+- **Limites d'Eclipse :**
+  - Eclipse ne propose pas d'automatisation complète pour les refactorings conceptuels comme *Replace Conditional with Polymorphism* ou *Replace Error Code with Exception*.
+  - Lorsque l'on a plusieurs branches dans un `if / else if (instanceof)`, Eclipse ne sait pas fusionner automatiquement les différentes branches dans les sous-classes : après avoir utilisé `Extract Method` -> `Move` -> `Pull Up` sur la première branche (`Developpeur`), il faut recopier manuellement le corps des autres branches dans `Commercial` et `Manager` et supprimer soi-même le bloc `if / else if` dans `CalculateurPrime`.
+  - De même, dans `Main`, la transformation d'un test `if (code == -1)` en bloc `try { ... } catch (IllegalArgumentException e) { ... }` doit être écrite manuellement.
+
+### 2. Ce que montre notre expérimentation avec le LLM
+- **Points forts du LLM :**
+  - Le LLM comprend directement l'intention globale du refactoring : il réalise en une seule passe la création des méthodes abstraites, la répartition des formules dans les sous-classes, le nettoyage des conditions `instanceof`, ou encore le remplacement complet des codes d'erreur et des `null` par des exceptions avec mise à jour simultanée des tests dans `Main`.
+  - Il maîtrise le vocabulaire du catalogue de Fowler et justifie ses choix de conception.
+- **Limites et précautions avec le LLM :**
+  - Le LLM a parfois tendance à pousser le refactoring plus loin que nécessaire (par exemple en déplaçant aussi `genererLigneBilan()` dans `Employe`, ce qui vide presque entièrement `CalculateurPrime` de sa logique, ou en omettant le test `if (employe == null)`).
+  - Contrairement aux opérations atomiques d'Eclipse qui garantissent la validité syntaxique sur l'arbre de syntaxe abstraite (AST), le code généré par un LLM doit systématiquement être revalidé par compilation et par des tests de non-régression.
+
+### 3. Conclusion
+L'IDE Eclipse et le LLM ne s'opposent pas mais se complètent. Les concepts étudiés en cours (catalogue de Fowler, identification des *code smells*, préservation du comportement observable) restent indispensables dans les deux cas : ils permettent de décomposer proprement une restructuration dans Eclipse, et fournissent le vocabulaire précis ainsi que l'esprit critique nécessaires pour piloter et contrôler un LLM.

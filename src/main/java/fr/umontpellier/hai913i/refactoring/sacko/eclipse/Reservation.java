@@ -1,8 +1,8 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
  * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
- * Sujet attribué à : SACKO DANGUE — Refactoring réalisé par : TEDJINI MOHAMED
- * Nature du fichier : Version initiale préparée pour refactoring manuel dans Eclipse — refactoring non encore effectué.
+ * Sujet attribué à : SACKO DANGUE ("Mixing return codes, nulls, and exceptions creates confusion and bugs.")
+ * Nature du fichier : Classe Reservation (version refactorée avec Eclipse).
  */
 package fr.umontpellier.hai913i.refactoring.sacko.eclipse;
 

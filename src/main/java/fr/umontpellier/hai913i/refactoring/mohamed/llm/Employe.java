@@ -1,7 +1,7 @@
 /*
  * Module : HAI913I - Évolution et Restructuration Logicielle (Master 2 ICO - Université de Montpellier)
  * Étudiants : TEDJINI MOHAMED et SACKO DANGUE
- * Sujet attribué à : TEDJINI MOHAMED — Refactoring réalisé par : SACKO DANGUE (via LLM)
+ * Sujet attribué à : TEDJINI MOHAMED ("Code frequently casts to concrete types, breaking polymorphism and adding fragility.")
  * Nature du fichier : Classe mère abstraite des employés après refactoring par le LLM.
  *
  * REFACTORINGS APPLIQUÉS :
